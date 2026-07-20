@@ -1,6 +1,6 @@
 import type { CelestialBody } from "./types";
 
-export type TimeMultiplier = 1 | 10 | 30 | 90 | 365;
+export type TimeMultiplier = 0 | 1 | 10 | 30 | 90 | 365;
 export type OrbitPoint = { x: number; y: number; z: number };
 
 export const secondsToSimulationDays = (

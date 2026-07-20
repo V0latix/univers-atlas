@@ -274,7 +274,7 @@ Expected: FAIL because `orbits.ts` does not exist.
 // src/domain/orbits.ts
 import type { CelestialBody } from "./types";
 
-export type TimeMultiplier = 1 | 10 | 30 | 90 | 365;
+export type TimeMultiplier = 0 | 1 | 10 | 30 | 90 | 365;
 export type OrbitPoint = { x: number; y: number; z: number };
 
 export const secondsToSimulationDays = (elapsedSeconds: number, multiplier: TimeMultiplier) => elapsedSeconds * multiplier;
@@ -284,6 +284,14 @@ export function orbitalPosition(body: CelestialBody, simulationDays: number): Or
   const phase = ((simulationDays % body.orbitalPeriodDays) / body.orbitalPeriodDays) * Math.PI * 2;
   return { x: Math.cos(phase) * body.orbitRadius, y: 0, z: Math.sin(phase) * body.orbitRadius };
 }
+```
+
+Add this test to `src/domain/orbits.test.ts`:
+
+```ts
+it("holds simulation time when the multiplier is zero", () => {
+  expect(secondsToSimulationDays(2, 0)).toBe(0);
+});
 ```
 
 - [ ] **Step 4: Verify behaviour.**
