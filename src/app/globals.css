@@ -724,7 +724,10 @@ input[type="search"] {
 }
 
 .profile-panel dd {
+  flex: 0 1 55%;
+  min-width: 0;
   margin: 0;
+  overflow-wrap: anywhere;
   text-align: right;
 }
 

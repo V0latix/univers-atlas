@@ -96,11 +96,17 @@ describe("FocusCard and ProfilePanel", () => {
       "Rotation",
       "Synchronous with its orbit (15.95 days)",
     );
-    expectProfileField("Orbital period", "15.945 days");
+    expectProfileField("Radius", "2,575 km");
+    expectProfileField("Orbital period", "15.945 days (0.04 Earth years)");
     expectProfileField("Diameter", "5,150 km");
     expectProfileField("Surface gravity", "1.35 m/s²");
     expectProfileField("Orbital velocity", "5.57 km/s");
-    expectProfileField("Distance from the Sun", "1,426,666,422 km");
+    expectProfileField(
+      "Distance from the Sun",
+      "1,426,666,422 km (9.54 AU)",
+    );
+    expectProfileField("System role", "Moon of Saturn");
+    expectProfileField("Catalogue coverage", "2 notable facts · 3 missions");
     expect(
       screen.getByRole("link", { name: "NASA Science — Titan" }),
     ).toHaveAttribute("href", "https://science.nasa.gov/saturn/moons/titan/");

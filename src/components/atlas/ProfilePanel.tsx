@@ -4,11 +4,30 @@ import { useCallback, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 import { getBodyById } from "@/data/solar-system";
+import type { CelestialBody } from "@/domain/types";
 import { formatNumber } from "@/lib/format-number";
 import { useAtlasStore } from "@/store/atlas-store";
 
 const withUnit = (value: number | undefined, unit: string) =>
   value === undefined ? "Data unavailable" : `${formatNumber(value)} ${unit}`;
+
+const decimal = (value: number) =>
+  new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(value);
+
+const kilometresToAu = (kilometres: number | undefined) =>
+  kilometres === undefined
+    ? "Data unavailable"
+    : decimal(kilometres / 149_597_870.7);
+
+const daysToEarthYears = (days: number | undefined) =>
+  days === undefined ? "Data unavailable" : decimal(days / 365.25);
+
+const systemRole = (body: CelestialBody, parentName: string) =>
+  body.kind === "star"
+    ? "Central star"
+    : body.kind === "moon"
+      ? `Moon of ${parentName}`
+      : "Primary planet";
 
 const asReadableLabel = (value: string) =>
   `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
@@ -108,8 +127,20 @@ export function ProfilePanel() {
           <dd>{selectedBody.rotation}</dd>
         </div>
         <div>
+          <dt>Radius</dt>
+          <dd>
+            {selectedBody.diameterKm === undefined
+              ? "Data unavailable"
+              : withUnit(selectedBody.diameterKm / 2, "km")}
+          </dd>
+        </div>
+        <div>
           <dt>Orbital period</dt>
-          <dd>{withUnit(selectedBody.orbitalPeriodDays, "days")}</dd>
+          <dd>
+            {selectedBody.orbitalPeriodDays === undefined
+              ? "Data unavailable"
+              : `${withUnit(selectedBody.orbitalPeriodDays, "days")} (${daysToEarthYears(selectedBody.orbitalPeriodDays)} Earth years)`}
+          </dd>
         </div>
         <div>
           <dt>Diameter</dt>
@@ -125,7 +156,22 @@ export function ProfilePanel() {
         </div>
         <div>
           <dt>Distance from the Sun</dt>
-          <dd>{withUnit(selectedBody.distanceFromSunKm, "km")}</dd>
+          <dd>
+            {selectedBody.distanceFromSunKm === undefined
+              ? "Data unavailable"
+              : `${withUnit(selectedBody.distanceFromSunKm, "km")} (${kilometresToAu(selectedBody.distanceFromSunKm)} AU)`}
+          </dd>
+        </div>
+        <div>
+          <dt>System role</dt>
+          <dd>{systemRole(selectedBody, parentName)}</dd>
+        </div>
+        <div>
+          <dt>Catalogue coverage</dt>
+          <dd>
+            {selectedBody.notableFacts.length} notable facts ·{" "}
+            {selectedBody.missions.length} missions
+          </dd>
         </div>
       </dl>
 
