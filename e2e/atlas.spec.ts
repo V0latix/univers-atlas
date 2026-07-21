@@ -58,12 +58,19 @@ test("turns the body catalog into a horizontal mobile rail", async ({ page }) =>
   await page.goto("/");
 
   const list = page.locator(".body-list");
-  await expect(
-    page.getByRole("button", { name: "Earth", exact: true }),
-  ).toBeVisible();
+  const earth = page.getByRole("button", { name: "Earth", exact: true });
+  await expect(earth).toBeVisible();
   expect(
     await list.evaluate((element) => element.scrollWidth > element.clientWidth),
   ).toBe(true);
+  const listBox = await list.boundingBox();
+  const earthBox = await earth.boundingBox();
+  expect(listBox).not.toBeNull();
+  expect(earthBox).not.toBeNull();
+  expect(earthBox!.x).toBeGreaterThanOrEqual(listBox!.x);
+  expect(earthBox!.x + earthBox!.width).toBeLessThanOrEqual(
+    listBox!.x + listBox!.width,
+  );
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
     390,
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
 import { getBodyById, solarSystem } from "@/data/solar-system";
@@ -11,10 +11,33 @@ import { CelestialBodyCard } from "./CelestialBodyCard";
 
 export function ExplorePanel() {
   const [query, setQuery] = useState("");
+  const listRef = useRef<HTMLUListElement>(null);
+  const selectedItemRef = useRef<HTMLLIElement>(null);
   const selectedId = useAtlasStore((state) => state.selectedId);
   const selectBody = useAtlasStore((state) => state.selectBody);
   const results = searchBodies(query, solarSystem);
   const selectedBody = getBodyById(selectedId);
+
+  useEffect(() => {
+    const list = listRef.current;
+    const selectedItem = selectedItemRef.current;
+    if (!list || !selectedItem) return;
+
+    const listRect = list.getBoundingClientRect();
+    const selectedRect = selectedItem.getBoundingClientRect();
+    const left =
+      selectedRect.left < listRect.left || selectedRect.right > listRect.right
+        ? selectedRect.left - listRect.left
+        : 0;
+    const top =
+      selectedRect.top < listRect.top || selectedRect.bottom > listRect.bottom
+        ? selectedRect.top - listRect.top
+        : 0;
+
+    if (left || top) {
+      list.scrollBy({ left, top });
+    }
+  }, [query, selectedId]);
 
   return (
     <aside className="explore-panel" aria-label="Explore the Solar System">
@@ -34,9 +57,12 @@ export function ExplorePanel() {
         {selectedBody ? `${selectedBody.name} selected` : ""}
       </p>
       {results.length > 0 ? (
-        <ul className="body-list">
+        <ul ref={listRef} className="body-list">
           {results.map((body) => (
-            <li key={body.id}>
+            <li
+              key={body.id}
+              ref={body.id === selectedId ? selectedItemRef : undefined}
+            >
               <CelestialBodyCard
                 body={body}
                 selected={body.id === selectedId}
