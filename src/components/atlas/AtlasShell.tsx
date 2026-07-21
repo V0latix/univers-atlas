@@ -40,16 +40,18 @@ export function AtlasShell({ forceWebglFallback = false }: AtlasShellProps) {
           </span>
         </div>
       </header>
-      <ExplorePanel />
       <div className="atlas-stage">
-        {fallback ? (
-          <WebglFallback />
-        ) : (
-          <SceneCanvas onWebglUnavailable={showFallback} />
-        )}
-        <ViewControls />
+        <div className="scene-viewport">
+          {fallback ? (
+            <WebglFallback />
+          ) : (
+            <SceneCanvas onWebglUnavailable={showFallback} />
+          )}
+        </div>
         <FocusCard />
+        <ViewControls />
       </div>
+      <ExplorePanel />
       <ProfilePanel />
     </main>
   );

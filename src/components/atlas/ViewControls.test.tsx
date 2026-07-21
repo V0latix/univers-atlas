@@ -31,6 +31,20 @@ describe("ViewControls", () => {
     );
   });
 
+  it("keeps short view labels visible without changing accessible names", () => {
+    render(<ViewControls />);
+
+    expect(
+      screen.getByRole("button", { name: "3D view" }),
+    ).toHaveTextContent("3D");
+    expect(
+      screen.getByRole("button", { name: "Top view" }),
+    ).toHaveTextContent("Top");
+    expect(
+      screen.getByRole("button", { name: "Side view" }),
+    ).toHaveTextContent("Side");
+  });
+
   it("toggles simulation pause and exposes the state with aria-pressed", async () => {
     const user = userEvent.setup();
     render(<ViewControls />);

@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 import type { CelestialBody } from "@/domain/types";
+import { formatNumber } from "@/lib/format-number";
 
 type CelestialBodyCardProps = {
   body: CelestialBody;
@@ -14,7 +15,7 @@ const kindLabels = { star: "Star", planet: "Planet", moon: "Moon" } as const;
 const getContext = (body: CelestialBody) =>
   body.orbitalPeriodDays === undefined
     ? "Solar System star"
-    : `${body.orbitalPeriodDays.toLocaleString()} day orbit`;
+    : `${formatNumber(body.orbitalPeriodDays)} day orbit`;
 
 export function CelestialBodyCard({
   body,

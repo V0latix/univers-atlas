@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -48,5 +48,24 @@ describe("ExplorePanel", () => {
 
     expect(screen.getByText("No celestial bodies found")).toBeInTheDocument();
     expect(screen.getByText("Try another name or classification.")).toBeInTheDocument();
+  });
+
+  it("reconciles a conflicting search when the store selects another body", async () => {
+    const user = userEvent.setup();
+    render(<ExplorePanel />);
+    const search = screen.getByRole("searchbox", {
+      name: "Search celestial bodies",
+    });
+
+    await user.type(search, "Titan");
+    expect(screen.queryByRole("button", { name: "Mars" })).not.toBeInTheDocument();
+
+    act(() => useAtlasStore.getState().selectBody("mars"));
+
+    await waitFor(() => expect(search).toHaveValue(""));
+    expect(screen.getByRole("button", { name: "Mars" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 });

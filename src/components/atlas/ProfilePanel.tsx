@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 import { getBodyById } from "@/data/solar-system";
+import { formatNumber } from "@/lib/format-number";
 import { useAtlasStore } from "@/store/atlas-store";
 
 const withUnit = (value: number | undefined, unit: string) =>
-  value === undefined ? "Data unavailable" : `${value.toLocaleString()} ${unit}`;
+  value === undefined ? "Data unavailable" : `${formatNumber(value)} ${unit}`;
 
 const asReadableLabel = (value: string) =>
   `${value.charAt(0).toUpperCase()}${value.slice(1)}`;

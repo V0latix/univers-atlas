@@ -1,7 +1,7 @@
 # Univers Atlas — Immersive Cockpit Visual Redesign
 
-**Date:** 2026-07-21  
-**Repository:** `univers-atlas`  
+**Date:** 2026-07-21
+**Repository:** `univers-atlas`
 **Scope:** visual and interaction redesign of the existing Solar System atlas
 
 ## Purpose

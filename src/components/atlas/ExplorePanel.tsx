@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
 import { getBodyById, solarSystem } from "@/data/solar-system";
@@ -18,7 +18,23 @@ export function ExplorePanel() {
   const results = searchBodies(query, solarSystem);
   const selectedBody = getBodyById(selectedId);
 
-  useEffect(() => {
+  useEffect(
+    () =>
+      useAtlasStore.subscribe((state, previousState) => {
+        if (state.selectedId === previousState.selectedId) return;
+
+        setQuery((currentQuery) =>
+          searchBodies(currentQuery, solarSystem).some(
+            (body) => body.id === state.selectedId,
+          )
+            ? currentQuery
+            : "",
+        );
+      }),
+    [],
+  );
+
+  const revealSelectedCard = useCallback(() => {
     const list = listRef.current;
     const selectedItem = selectedItemRef.current;
     if (!list || !selectedItem) return;
@@ -37,14 +53,27 @@ export function ExplorePanel() {
     if (left || top) {
       list.scrollBy({ left, top });
     }
-  }, [query, selectedId]);
+  }, []);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    revealSelectedCard();
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(revealSelectedCard);
+    observer.observe(list);
+
+    return () => observer.disconnect();
+  }, [query, revealSelectedCard, selectedId]);
 
   return (
     <aside className="explore-panel" aria-label="Explore the Solar System">
       <p>Celestial index</p>
       <h2>Explore worlds</h2>
       <label htmlFor="body-search">Search celestial bodies</label>
-      <div>
+      <div className="search-field">
         <Search aria-hidden="true" size={16} />
         <input
           id="body-search"

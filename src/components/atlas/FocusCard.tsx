@@ -3,10 +3,11 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { getBodyById } from "@/data/solar-system";
+import { formatNumber } from "@/lib/format-number";
 import { useAtlasStore } from "@/store/atlas-store";
 
 const valueWithUnit = (value: number | undefined, unit: string) =>
-  value === undefined ? "Unavailable" : `${value.toLocaleString()} ${unit}`;
+  value === undefined ? "Unavailable" : `${formatNumber(value)} ${unit}`;
 
 export function FocusCard() {
   const selectedId = useAtlasStore((state) => state.selectedId);

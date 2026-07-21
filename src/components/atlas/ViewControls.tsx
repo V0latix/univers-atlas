@@ -16,11 +16,12 @@ import { useAtlasStore } from "@/store/atlas-store";
 const views: ReadonlyArray<{
   icon: LucideIcon;
   label: string;
+  shortLabel: string;
   value: ViewMode;
 }> = [
-  { icon: Box, label: "3D view", value: "3d" },
-  { icon: CircleDot, label: "Top view", value: "top" },
-  { icon: PanelTop, label: "Side view", value: "side" },
+  { icon: Box, label: "3D view", shortLabel: "3D", value: "3d" },
+  { icon: CircleDot, label: "Top view", shortLabel: "Top", value: "top" },
+  { icon: PanelTop, label: "Side view", shortLabel: "Side", value: "side" },
 ];
 
 const speeds: TimeMultiplier[] = [1, 10, 30, 90, 365];
@@ -48,7 +49,9 @@ export function ViewControls() {
               onClick={() => setViewMode(view.value)}
             >
               <Icon aria-hidden="true" />
-              {view.label}
+              <span className="view-controls__view-label">
+                {view.shortLabel}
+              </span>
             </button>
           );
         })}
