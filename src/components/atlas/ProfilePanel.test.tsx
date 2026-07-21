@@ -59,6 +59,18 @@ describe("FocusCard and ProfilePanel", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the selected body portrait in the profile’s sticky header", () => {
+    useAtlasStore.getState().selectAndOpenProfile("mars");
+    render(<ProfilePanel />);
+
+    expect(
+      screen.getByRole("img", { name: "Mars illustration" }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("profile-sticky-header")).toContainElement(
+      screen.getByRole("heading", { name: "Mars profile" }),
+    );
+  });
+
   it("closes on Escape and restores focus to the selected catalogue card", async () => {
     const user = userEvent.setup();
     render(

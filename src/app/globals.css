@@ -675,16 +675,30 @@ input[type="search"] {
   scrollbar-width: thin;
 }
 
-.profile-panel header {
+.profile-panel__header {
   position: sticky;
-  z-index: 1;
-  top: 0;
+  z-index: 2;
+  top: -1.15rem;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: .4rem;
+  align-items: center;
+  gap: .8rem;
+  margin: -1.15rem -1.15rem .95rem;
+  padding: 1.15rem;
   background: #071426;
+  box-shadow: 0 .8rem 1.25rem rgb(2 8 18 / 88%);
+}
+
+.profile-panel__title {
+  min-width: 0;
+}
+
+.profile-panel__title > span {
+  color: var(--ice);
+  font-size: .62rem;
+  font-weight: 720;
+  letter-spacing: .14em;
+  line-height: 1.25;
+  text-transform: uppercase;
 }
 
 .profile-panel h2,
@@ -703,11 +717,126 @@ input[type="search"] {
   font-size: 1rem;
 }
 
-.profile-panel header button {
+.profile-panel__header button {
   display: grid;
   flex: 0 0 auto;
+  margin-left: auto;
   padding: 0;
   place-items: center;
+}
+
+.celestial-portrait {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  width: 4.3rem;
+  height: 4.3rem;
+  place-items: center;
+  overflow: visible;
+}
+
+.celestial-portrait__globe {
+  position: relative;
+  z-index: 1;
+  width: 3.8rem;
+  height: 3.8rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 31% 26%, rgb(255 255 255 / 78%), transparent 14%),
+    radial-gradient(circle at 68% 72%, color-mix(in srgb, var(--body-color) 38%, #100c14), transparent 54%),
+    linear-gradient(135deg, var(--body-color), #292337 120%);
+  box-shadow: inset -.55rem -.4rem .9rem rgb(0 0 0 / 34%), 0 0 1.2rem color-mix(in srgb, var(--body-color) 42%, transparent);
+}
+
+.celestial-portrait__globe::before,
+.celestial-portrait__globe::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.celestial-portrait--solar-granulation .celestial-portrait__globe {
+  background:
+    radial-gradient(circle at 28% 24%, #fff7c4, transparent 13%),
+    radial-gradient(circle at 65% 62%, rgb(230 98 27 / 56%), transparent 28%),
+    radial-gradient(circle at 42% 74%, rgb(255 221 115 / 48%), transparent 22%),
+    radial-gradient(circle, var(--body-color), #c74f18 78%);
+}
+
+.celestial-portrait--terrestrial-clouds .celestial-portrait__globe::before {
+  background: radial-gradient(ellipse at 30% 40%, rgb(255 255 255 / 52%) 0 8%, transparent 13%), radial-gradient(ellipse at 72% 68%, rgb(255 255 255 / 42%) 0 9%, transparent 14%);
+}
+
+.celestial-portrait--gas-bands .celestial-portrait__globe {
+  background:
+    linear-gradient(175deg, transparent 12%, rgb(255 235 196 / 58%) 13% 21%, transparent 22% 31%, rgb(89 50 36 / 36%) 32% 42%, transparent 43% 53%, rgb(255 238 192 / 53%) 54% 63%, transparent 64% 75%, rgb(118 64 41 / 38%) 76% 83%, transparent 84%),
+    radial-gradient(circle at 31% 27%, #fff7df, var(--body-color) 34%, #4c3127 92%);
+}
+
+.celestial-portrait--gas-bands .celestial-portrait__globe::after {
+  top: 55%;
+  right: 14%;
+  bottom: auto;
+  left: auto;
+  width: .75rem;
+  height: .32rem;
+  border-radius: 50%;
+  background: rgb(165 81 57 / 75%);
+}
+
+.celestial-portrait--icy-bands .celestial-portrait__globe::after {
+  top: 42%;
+  right: auto;
+  bottom: auto;
+  left: -.45rem;
+  width: 4.7rem;
+  height: 1.4rem;
+  border: .18rem solid color-mix(in srgb, var(--body-color) 62%, #fff0c4);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 .8rem color-mix(in srgb, var(--body-color) 45%, transparent);
+  transform: rotate(-18deg);
+}
+
+.celestial-portrait--cratered-rock .celestial-portrait__globe::before {
+  background: radial-gradient(circle at 65% 30%, rgb(47 37 34 / 36%) 0 6%, transparent 7%), radial-gradient(circle at 30% 66%, rgb(245 232 209 / 26%) 0 8%, transparent 9%), radial-gradient(circle at 72% 72%, rgb(49 38 34 / 30%) 0 5%, transparent 6%);
+}
+
+.celestial-portrait--hazy-clouds .celestial-portrait__globe::before,
+.celestial-portrait--ice-giant .celestial-portrait__globe::before {
+  background: repeating-linear-gradient(174deg, transparent 0 .38rem, rgb(255 243 211 / 19%) .42rem .6rem, transparent .64rem .95rem);
+}
+
+.celestial-portrait__rings {
+  position: absolute;
+  z-index: 0;
+  width: 4.65rem;
+  height: 1.38rem;
+  border: .18rem solid color-mix(in srgb, var(--body-color) 62%, #fff0c4);
+  border-radius: 50%;
+  box-shadow: 0 0 .8rem color-mix(in srgb, var(--body-color) 45%, transparent);
+  pointer-events: none;
+  transform: rotate(-18deg);
+}
+
+.celestial-portrait__rings::before {
+  position: absolute;
+  z-index: -1;
+  inset: -.18rem;
+  border: inherit;
+  border-radius: inherit;
+  content: "";
+  opacity: .48;
+  transform: scale(.78);
+}
+
+.celestial-portrait__rings::after {
+  position: absolute;
+  inset: .18rem;
+  border: .07rem solid rgb(255 246 214 / 68%);
+  border-radius: inherit;
+  content: "";
 }
 
 .profile-panel > p,
@@ -846,6 +975,13 @@ input[type="search"] {
     max-width: none;
     max-height: none;
     overflow-y: visible;
+  }
+
+  .profile-panel__header {
+    position: static;
+    top: auto;
+    margin: 0 0 .95rem;
+    box-shadow: none;
   }
 }
 

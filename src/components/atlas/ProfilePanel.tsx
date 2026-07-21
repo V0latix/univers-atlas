@@ -8,6 +8,8 @@ import type { CelestialBody } from "@/domain/types";
 import { formatNumber } from "@/lib/format-number";
 import { useAtlasStore } from "@/store/atlas-store";
 
+import { CelestialBodyPortrait } from "./CelestialBodyPortrait";
+
 const withUnit = (value: number | undefined, unit: string) =>
   value === undefined ? "Data unavailable" : `${formatNumber(value)} ${unit}`;
 
@@ -87,8 +89,12 @@ export function ProfilePanel() {
       aria-labelledby={titleId}
       className="profile-panel"
     >
-      <header>
-        <h2 id={titleId}>{selectedBody.name} profile</h2>
+      <header className="profile-panel__header" data-testid="profile-sticky-header">
+        <CelestialBodyPortrait body={selectedBody} />
+        <div className="profile-panel__title">
+          <span>{asReadableLabel(selectedBody.kind)}</span>
+          <h2 id={titleId}>{selectedBody.name} profile</h2>
+        </div>
         <button
           ref={closeButtonRef}
           type="button"

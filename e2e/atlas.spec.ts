@@ -65,6 +65,20 @@ test("opens the profile for each body selected directly from the catalog", async
   ).toBeVisible();
 });
 
+test("keeps the profile title opaque above its scrolling content", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Jupiter", exact: true }).click();
+  const profile = page.getByRole("dialog", { name: "Jupiter profile" });
+  const header = profile.getByTestId("profile-sticky-header");
+  await profile.evaluate((element) => {
+    element.scrollTop = 220;
+  });
+  await expect(header).toBeVisible();
+  await expect(header).toHaveCSS("position", "sticky");
+  await expect(header).toHaveCSS("background-color", "rgb(7, 20, 38)");
+});
+
 test("shows recognizable cards beside the desktop scene", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
