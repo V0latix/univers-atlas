@@ -1,10 +1,10 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactElement } from "react";
 
 import type { CelestialBody } from "@/domain/types";
 
 import { getCelestialPresentation } from "./celestial-presentation";
 
-export function CelestialBodyPortrait({ body }: { body: CelestialBody }): JSX.Element {
+export function CelestialBodyPortrait({ body }: { body: CelestialBody }): ReactElement {
   const presentation = getCelestialPresentation(body);
   const style = { "--body-color": body.color } as CSSProperties;
 
