@@ -25,20 +25,37 @@ const CAMERA_POSITIONS: Record<ViewMode, [number, number, number]> = {
   "3d": [0, 42, 70],
 };
 const bodiesById = new Map(solarSystem.map((body) => [body.id, body]));
+export const sceneAnchors: Record<string, OrbitPoint> = {
+  pluto: { x: 54, y: 0, z: -24 },
+};
 
-function getBodyPosition(body: CelestialBody, simulationDays: number): OrbitPoint {
+function getSceneParentPosition(
+  parentId: string,
+  simulationDays: number,
+): OrbitPoint | undefined {
+  const parentBody = bodiesById.get(parentId);
+
+  return parentBody
+    ? getSceneBodyPosition(parentBody, simulationDays)
+    : sceneAnchors[parentId];
+}
+
+export function getSceneBodyPosition(
+  body: CelestialBody,
+  simulationDays: number,
+): OrbitPoint {
   const localPosition = orbitalPosition(body, simulationDays);
-  const parent = body.parentId ? bodiesById.get(body.parentId) : undefined;
+  const parentPosition = body.parentId
+    ? getSceneParentPosition(body.parentId, simulationDays)
+    : undefined;
 
-  if (!parent) {
+  if (!parentPosition) {
     return {
       x: localPosition.x,
       y: localPosition.y,
       z: localPosition.z * ORBIT_ECCENTRICITY,
     };
   }
-
-  const parentPosition = getBodyPosition(parent, simulationDays);
 
   return {
     x: parentPosition.x + localPosition.x,
@@ -69,7 +86,10 @@ function GuidedCamera({
     const selectedBody = bodiesById.get(selectedId);
 
     if (selectedBody) {
-      const position = getBodyPosition(selectedBody, simulationDaysRef.current);
+      const position = getSceneBodyPosition(
+        selectedBody,
+        simulationDaysRef.current,
+      );
       desiredFocus.current.set(position.x, position.y, position.z);
     }
   }, [selectedId, simulationDaysRef, viewMode]);
@@ -81,7 +101,10 @@ function GuidedCamera({
 
     const selectedBody = bodiesById.get(selectedId);
     if (selectedBody) {
-      const position = getBodyPosition(selectedBody, simulationDaysRef.current);
+      const position = getSceneBodyPosition(
+        selectedBody,
+        simulationDaysRef.current,
+      );
       desiredFocus.current.set(position.x, position.y, position.z);
     }
 
@@ -103,7 +126,6 @@ export function AtlasScene() {
 
   return (
     <>
-      <color attach="background" args={["#020812"]} />
       <fog attach="fog" args={["#020812", 62, 128]} />
       <ambientLight intensity={0.24} />
       <pointLight color="#9ac8ff" intensity={0.3} position={[0, 22, 18]} />
@@ -123,8 +145,7 @@ export function AtlasScene() {
           <OrbitPath
             key={`${body.id}-orbit`}
             body={body}
-            parent={body.parentId ? bodiesById.get(body.parentId) : undefined}
-            getBodyPosition={getBodyPosition}
+            getParentPosition={getSceneParentPosition}
             simulationDaysRef={simulationDaysRef}
           />
         ))}
@@ -133,7 +154,7 @@ export function AtlasScene() {
         <CelestialBodyMesh
           key={body.id}
           body={body}
-          getBodyPosition={getBodyPosition}
+          getBodyPosition={getSceneBodyPosition}
           simulationDaysRef={simulationDaysRef}
         />
       ))}

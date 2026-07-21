@@ -13,15 +13,13 @@ const ORBIT_SEGMENTS = 128;
 
 type OrbitPathProps = {
   body: CelestialBody;
-  parent?: CelestialBody;
-  getBodyPosition: (body: CelestialBody, simulationDays: number) => OrbitPoint;
+  getParentPosition: (parentId: string, simulationDays: number) => OrbitPoint | undefined;
   simulationDaysRef: MutableRefObject<number>;
 };
 
 export function OrbitPath({
   body,
-  parent,
-  getBodyPosition,
+  getParentPosition,
   simulationDaysRef,
 }: OrbitPathProps) {
   const groupRef = useRef<Group>(null);
@@ -42,11 +40,11 @@ export function OrbitPath({
   }, [body.orbitRadius]);
 
   useFrame(() => {
-    const position = parent
-      ? getBodyPosition(parent, simulationDaysRef.current)
-      : { x: 0, y: 0, z: 0 };
+    const position = body.parentId
+      ? getParentPosition(body.parentId, simulationDaysRef.current)
+      : undefined;
 
-    groupRef.current?.position.set(position.x, position.y, position.z);
+    groupRef.current?.position.set(position?.x ?? 0, position?.y ?? 0, position?.z ?? 0);
   });
 
   return (
