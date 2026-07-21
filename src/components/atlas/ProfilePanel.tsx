@@ -1,5 +1,7 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
+
 import { getBodyById } from "@/data/solar-system";
 import { useAtlasStore } from "@/store/atlas-store";
 
@@ -14,6 +16,29 @@ export function ProfilePanel() {
   const isProfileOpen = useAtlasStore((state) => state.isProfileOpen);
   const setProfileOpen = useAtlasStore((state) => state.setProfileOpen);
   const selectedBody = getBodyById(selectedId);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeProfile = useCallback(() => {
+    setProfileOpen(false);
+    queueMicrotask(() => {
+      document.getElementById(`profile-trigger-${selectedId}`)?.focus();
+    });
+  }, [selectedId, setProfileOpen]);
+
+  useEffect(() => {
+    if (!isProfileOpen || !selectedBody) return;
+
+    closeButtonRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeProfile();
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [closeProfile, isProfileOpen, selectedBody]);
 
   if (!isProfileOpen || !selectedBody) return null;
 
@@ -30,9 +55,10 @@ export function ProfilePanel() {
       <header>
         <h2 id={titleId}>{selectedBody.name} profile</h2>
         <button
+          ref={closeButtonRef}
           type="button"
           aria-label="Close profile"
-          onClick={() => setProfileOpen(false)}
+          onClick={closeProfile}
         >
           Close
         </button>
@@ -58,8 +84,8 @@ export function ProfilePanel() {
           <dd>{selectedBody.composition}</dd>
         </div>
         <div>
-          <dt>Mean temperature</dt>
-          <dd>{withUnit(selectedBody.meanTemperatureC, "°C")}</dd>
+          <dt>{selectedBody.temperatureLabel}</dt>
+          <dd>{withUnit(selectedBody.temperatureC, "°C")}</dd>
         </div>
         <div>
           <dt>Rotation</dt>

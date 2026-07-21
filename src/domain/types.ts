@@ -14,7 +14,8 @@ export type CelestialBody = {
   rotation: string;
   diameterKm: number;
   gravityMs2?: number;
-  meanTemperatureC?: number;
+  temperatureC: number;
+  temperatureLabel: string;
   composition: string;
   atmosphere?: string;
   distanceFromSunKm?: number;

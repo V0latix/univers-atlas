@@ -13,6 +13,7 @@ import {
   type TimeMultiplier,
 } from "@/domain/orbits";
 import type { CelestialBody, ViewMode } from "@/domain/types";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useAtlasStore } from "@/store/atlas-store";
 
 import { CelestialBodyMesh } from "./CelestialBodyMesh";
@@ -28,6 +29,31 @@ const bodiesById = new Map(solarSystem.map((body) => [body.id, body]));
 export const sceneAnchors: Record<string, OrbitPoint> = {
   pluto: { x: 54, y: 0, z: -24 },
 };
+
+type SimulationStep = {
+  currentDays: number;
+  deltaSeconds: number;
+  timeMultiplier: TimeMultiplier;
+  isPaused: boolean;
+  prefersReducedMotion: boolean;
+};
+
+export function getNextSimulationDays({
+  currentDays,
+  deltaSeconds,
+  timeMultiplier,
+  isPaused,
+  prefersReducedMotion,
+}: SimulationStep) {
+  if (isPaused || prefersReducedMotion) return currentDays;
+
+  return currentDays + secondsToSimulationDays(deltaSeconds, timeMultiplier);
+}
+
+export const cameraInterpolationFactor = (
+  deltaSeconds: number,
+  prefersReducedMotion: boolean,
+) => (prefersReducedMotion ? 1 : 1 - Math.exp(-4 * deltaSeconds));
 
 function getSceneParentPosition(
   parentId: string,
@@ -70,12 +96,14 @@ function GuidedCamera({
   isPaused,
   timeMultiplier,
   simulationDaysRef,
+  prefersReducedMotion,
 }: {
   selectedId: string;
   viewMode: ViewMode;
   isPaused: boolean;
   timeMultiplier: TimeMultiplier;
   simulationDaysRef: MutableRefObject<number>;
+  prefersReducedMotion: boolean;
 }) {
   const desiredCameraPosition = useRef(new Vector3(...CAMERA_POSITIONS[viewMode]));
   const desiredFocus = useRef(new Vector3());
@@ -95,9 +123,13 @@ function GuidedCamera({
   }, [selectedId, simulationDaysRef, viewMode]);
 
   useFrame(({ camera }, delta) => {
-    if (!isPaused) {
-      simulationDaysRef.current += secondsToSimulationDays(delta, timeMultiplier);
-    }
+    simulationDaysRef.current = getNextSimulationDays({
+      currentDays: simulationDaysRef.current,
+      deltaSeconds: delta,
+      timeMultiplier,
+      isPaused,
+      prefersReducedMotion,
+    });
 
     const selectedBody = bodiesById.get(selectedId);
     if (selectedBody) {
@@ -108,7 +140,7 @@ function GuidedCamera({
       desiredFocus.current.set(position.x, position.y, position.z);
     }
 
-    const damping = 1 - Math.exp(-4 * delta);
+    const damping = cameraInterpolationFactor(delta, prefersReducedMotion);
     camera.position.lerp(desiredCameraPosition.current, damping);
     cameraFocus.current.lerp(desiredFocus.current, damping);
     camera.lookAt(cameraFocus.current);
@@ -122,6 +154,7 @@ export function AtlasScene() {
   const viewMode = useAtlasStore((state) => state.viewMode);
   const isPaused = useAtlasStore((state) => state.isPaused);
   const timeMultiplier = useAtlasStore((state) => state.timeMultiplier);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const simulationDaysRef = useRef(0);
 
   return (
@@ -137,6 +170,7 @@ export function AtlasScene() {
         isPaused={isPaused}
         timeMultiplier={timeMultiplier}
         simulationDaysRef={simulationDaysRef}
+        prefersReducedMotion={prefersReducedMotion}
       />
 
       {solarSystem
