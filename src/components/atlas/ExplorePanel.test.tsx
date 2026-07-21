@@ -23,4 +23,30 @@ describe("ExplorePanel", () => {
     expect(useAtlasStore.getState().selectedId).toBe("titan");
     expect(screen.queryByRole("button", { name: "Earth" })).not.toBeInTheDocument();
   });
+
+  it("marks the current body card as selected", () => {
+    render(<ExplorePanel />);
+
+    expect(screen.getByRole("button", { name: "Earth" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(screen.getByRole("button", { name: "Mars" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+  });
+
+  it("shows a useful state for unmatched searches", async () => {
+    const user = userEvent.setup();
+    render(<ExplorePanel />);
+
+    await user.type(
+      screen.getByRole("searchbox", { name: "Search celestial bodies" }),
+      "unknown world",
+    );
+
+    expect(screen.getByText("No celestial bodies found")).toBeInTheDocument();
+    expect(screen.getByText("Try another name or classification.")).toBeInTheDocument();
+  });
 });
