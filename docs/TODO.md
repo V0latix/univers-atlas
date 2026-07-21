@@ -1,5 +1,8 @@
 # TODO — Univers Atlas
 
+This roadmap tracks the scientific and product expansion planned after the
+initial English Solar System release.
+
 ## Next scientific coverage
 
 - Add every natural satellite in the Solar System.
