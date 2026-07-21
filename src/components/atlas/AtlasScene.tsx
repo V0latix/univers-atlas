@@ -101,9 +101,11 @@ export function getFocusTarget(
 function CameraPreset({
   controlsRef,
   viewMode,
+  viewRevision,
 }: {
   controlsRef: RefObject<OrbitControlsImpl | null>;
   viewMode: ViewMode;
+  viewRevision: number;
 }) {
   useEffect(() => {
     const controls = controlsRef.current;
@@ -113,7 +115,7 @@ function CameraPreset({
     controls.object.position.set(x, y, z);
     controls.target.set(0, 0, 0);
     controls.update();
-  }, [controlsRef, viewMode]);
+  }, [controlsRef, viewMode, viewRevision]);
 
   return null;
 }
@@ -159,18 +161,23 @@ function getVectorTuple({ x, y, z }: { x: number; y: number; z: number }): Vecto
 function SelectedBodyFocus({
   controlsRef,
   focusRevision,
+  viewRevision,
   selectedId,
   simulationDaysRef,
   prefersReducedMotion,
 }: {
   controlsRef: RefObject<OrbitControlsImpl | null>;
   focusRevision: number;
+  viewRevision: number;
   selectedId: string;
   simulationDaysRef: MutableRefObject<number>;
   prefersReducedMotion: boolean;
 }) {
   const transitionRef = useRef<CameraFocusTransition | null>(null);
-  const initializedFocusRevisionRef = useRef<number | null>(null);
+  const initializedCancellationRef = useRef<{
+    focusRevision: number;
+    viewRevision: number;
+  } | null>(null);
 
   useEffect(() => {
     const controls = controlsRef.current;
@@ -198,35 +205,44 @@ function SelectedBodyFocus({
   }, [controlsRef, prefersReducedMotion, selectedId, simulationDaysRef]);
 
   useEffect(() => {
-    if (initializedFocusRevisionRef.current === null) {
-      initializedFocusRevisionRef.current = focusRevision;
+    if (initializedCancellationRef.current === null) {
+      initializedCancellationRef.current = { focusRevision, viewRevision };
       return;
     }
 
     transitionRef.current = null;
-    initializedFocusRevisionRef.current = focusRevision;
-  }, [focusRevision]);
+    initializedCancellationRef.current = { focusRevision, viewRevision };
+  }, [focusRevision, viewRevision]);
 
   useFrame(() => {
     const transition = transitionRef.current;
     const controls = controlsRef.current;
-    if (!transition || !controls) return;
+    const selectedBody = bodiesById.get(selectedId);
+    if (!transition || !controls || !selectedBody) return;
 
     const progress = easeOutCubic(
       (Date.now() - transition.startedAt) / transition.durationMs,
     );
     const interpolate = (start: number, end: number) =>
       start + (end - start) * progress;
+    const focusTarget = getFocusTarget(selectedBody, simulationDaysRef.current);
+    const currentTarget = getVectorTuple(focusTarget);
+    const focusOffset = transition.endPosition.map(
+      (coordinate, index) => coordinate - transition.target[index],
+    ) as VectorTuple;
+    const currentEndPosition = currentTarget.map(
+      (coordinate, index) => coordinate + focusOffset[index],
+    ) as VectorTuple;
 
     controls.object.position.set(
-      interpolate(transition.startPosition[0], transition.endPosition[0]),
-      interpolate(transition.startPosition[1], transition.endPosition[1]),
-      interpolate(transition.startPosition[2], transition.endPosition[2]),
+      interpolate(transition.startPosition[0], currentEndPosition[0]),
+      interpolate(transition.startPosition[1], currentEndPosition[1]),
+      interpolate(transition.startPosition[2], currentEndPosition[2]),
     );
     controls.target.set(
-      interpolate(transition.startTarget[0], transition.target[0]),
-      interpolate(transition.startTarget[1], transition.target[1]),
-      interpolate(transition.startTarget[2], transition.target[2]),
+      interpolate(transition.startTarget[0], currentTarget[0]),
+      interpolate(transition.startTarget[1], currentTarget[1]),
+      interpolate(transition.startTarget[2], currentTarget[2]),
     );
     controls.update();
 
@@ -247,6 +263,7 @@ export function AtlasScene({
 }) {
   const selectedId = useAtlasStore((state) => state.selectedId);
   const viewMode = useAtlasStore((state) => state.viewMode);
+  const viewRevision = useAtlasStore((state) => state.viewRevision);
   const isPaused = useAtlasStore((state) => state.isPaused);
   const timeMultiplier = useAtlasStore((state) => state.timeMultiplier);
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -259,20 +276,25 @@ export function AtlasScene({
       <pointLight color="#9ac8ff" intensity={0.38} position={[0, 22, 18]} />
       <pointLight color="#fbbf24" intensity={4.5} distance={92} position={[0, 0, 0]} />
 
-      <CameraPreset controlsRef={controlsRef} viewMode={viewMode} />
-
-      <SelectedBodyFocus
+      <CameraPreset
         controlsRef={controlsRef}
-        focusRevision={focusRevision}
-        selectedId={selectedId}
-        simulationDaysRef={simulationDaysRef}
-        prefersReducedMotion={prefersReducedMotion}
+        viewMode={viewMode}
+        viewRevision={viewRevision}
       />
 
       <GuidedCamera
         selectedId={selectedId}
         isPaused={isPaused}
         timeMultiplier={timeMultiplier}
+        simulationDaysRef={simulationDaysRef}
+        prefersReducedMotion={prefersReducedMotion}
+      />
+
+      <SelectedBodyFocus
+        controlsRef={controlsRef}
+        focusRevision={focusRevision}
+        viewRevision={viewRevision}
+        selectedId={selectedId}
         simulationDaysRef={simulationDaysRef}
         prefersReducedMotion={prefersReducedMotion}
       />

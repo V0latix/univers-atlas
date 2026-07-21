@@ -30,6 +30,15 @@ describe("useAtlasStore", () => {
     expect(useAtlasStore.getState().viewMode).toBe("top");
   });
 
+  it("records every view preset application, including the active preset", () => {
+    const initialRevision = useAtlasStore.getState().viewRevision;
+
+    useAtlasStore.getState().setViewMode("3d");
+    useAtlasStore.getState().setViewMode("3d");
+
+    expect(useAtlasStore.getState().viewRevision).toBe(initialRevision + 2);
+  });
+
   it("toggles the paused state", () => {
     useAtlasStore.getState().togglePaused();
 

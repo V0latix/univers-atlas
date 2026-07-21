@@ -71,12 +71,21 @@ test("keeps the profile title opaque above its scrolling content", async ({ page
   await page.getByRole("button", { name: "Jupiter", exact: true }).click();
   const profile = page.getByRole("dialog", { name: "Jupiter profile" });
   const header = profile.getByTestId("profile-sticky-header");
+  const headerBeforeScroll = await header.boundingBox();
+  expect(headerBeforeScroll).not.toBeNull();
   await profile.evaluate((element) => {
     element.scrollTop = 220;
   });
+  await expect
+    .poll(() => profile.evaluate((element) => element.scrollTop))
+    .toBeGreaterThan(0);
+  const headerAfterScroll = await header.boundingBox();
+  expect(headerAfterScroll).not.toBeNull();
   await expect(header).toBeVisible();
   await expect(header).toHaveCSS("position", "sticky");
   await expect(header).toHaveCSS("background-color", "rgb(7, 20, 38)");
+  expect(headerAfterScroll!.x).toBeCloseTo(headerBeforeScroll!.x, 0);
+  expect(headerAfterScroll!.y).toBeCloseTo(headerBeforeScroll!.y, 0);
 });
 
 test("shows recognizable cards beside the desktop scene", async ({ page }) => {

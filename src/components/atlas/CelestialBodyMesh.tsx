@@ -92,7 +92,7 @@ export function CelestialBodyMesh({
           />
         </mesh>
       ) : null}
-      {body.hasRings ? (
+      {presentation.ringStyle ? (
         <mesh
           data-ring-layer="rear"
           rotation={RING_ROTATION}
@@ -110,7 +110,7 @@ export function CelestialBodyMesh({
           />
         </mesh>
       ) : null}
-      {body.hasRings ? (
+      {presentation.ringStyle ? (
         <mesh
           data-ring-layer="front"
           rotation={RING_ROTATION}
