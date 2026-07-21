@@ -1,26 +1,397 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --space-base: #050918;
+  --space-mid: #07182e;
+  --panel: rgb(8 19 38 / 82%);
+  --accent: #9ac8ff;
+  --foreground: #eaf3ff;
+  --muted: #91a6bf;
+  --border: rgb(154 200 255 / 20%);
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: var(--space-base);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  background: var(--space-base);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.atlas-shell {
+  display: grid;
+  grid-template-areas:
+    "brand scene profile"
+    "explore scene profile"
+    "explore controls profile";
+  grid-template-columns: 20rem minmax(0, 1fr) 22rem;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  min-height: 100svh;
+  padding: 1rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 72% 18%, rgb(24 71 123 / 34%), transparent 43%),
+    radial-gradient(ellipse at 15% 92%, rgb(19 52 96 / 30%), transparent 38%),
+    linear-gradient(145deg, var(--space-base), var(--space-mid) 55%, #02050d);
+}
+
+.atlas-brand {
+  z-index: 2;
+  grid-area: brand;
+  padding: 0.4rem 0.45rem 0;
+}
+
+.atlas-brand p {
+  margin: 0 0 0.3rem;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.atlas-brand h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+}
+
+.atlas-shell > aside,
+.atlas-shell > section:not(.scene-canvas) {
+  z-index: 2;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel);
+  box-shadow: 0 1.25rem 3.5rem rgb(0 0 0 / 26%);
+  backdrop-filter: blur(1rem);
+}
+
+.atlas-shell > aside[aria-label="Explore the Solar System"] {
+  grid-area: explore;
+  width: 20rem;
+  min-height: 0;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.atlas-shell > aside[aria-label="Explore the Solar System"] label,
+.atlas-shell > section[aria-label="View controls"] > label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.atlas-shell input[type="search"],
+.atlas-shell select {
+  width: 100%;
+  min-height: 2.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: rgb(2 8 19 / 62%);
+}
+
+.atlas-shell input[type="search"] {
+  padding: 0 0.85rem;
+}
+
+.atlas-shell select {
+  padding: 0 2rem 0 0.75rem;
+}
+
+.atlas-shell aside[aria-label="Explore the Solar System"] > p {
+  min-height: 1.25rem;
+  margin: 0.7rem 0;
+  color: var(--accent);
+  font-size: 0.82rem;
+}
+
+.atlas-shell aside[aria-label="Explore the Solar System"] ul,
+.atlas-shell aside[role="dialog"] ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atlas-shell aside[aria-label="Explore the Solar System"] button {
+  width: 100%;
+  padding: 0.62rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  background: rgb(154 200 255 / 6%);
+  text-align: left;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.atlas-shell aside[aria-label="Explore the Solar System"] button:hover {
+  border-color: var(--border);
+  background: rgb(154 200 255 / 12%);
+}
+
+.scene-canvas,
+.webgl-fallback {
+  grid-area: scene;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgb(154 200 255 / 12%);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 0 5rem rgb(3 9 24 / 48%);
+}
+
+.scene-canvas canvas {
+  display: block;
+}
+
+.webgl-fallback {
+  display: grid;
+  place-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.webgl-fallback p {
+  max-width: 30rem;
+  margin: 0;
+}
+
+.webgl-fallback p:first-child {
+  color: var(--foreground);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: -0.035em;
+}
+
+.webgl-fallback p + p {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.atlas-shell > section[aria-label="View controls"] {
+  display: grid;
+  grid-area: controls;
+  grid-template-columns: minmax(0, 1fr) auto minmax(8rem, 0.55fr);
+  align-items: end;
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+
+.atlas-shell > section[aria-label="View controls"] > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.atlas-shell > section[aria-label="View controls"] > label {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.atlas-shell > section[aria-label="View controls"] > select {
+  grid-column: 3;
+  grid-row: 1;
+  margin-top: 1.1rem;
+}
+
+.atlas-shell button {
+  min-height: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: rgb(154 200 255 / 7%);
+}
+
+.atlas-shell button:hover,
+.atlas-shell button[aria-pressed="true"] {
+  border-color: rgb(154 200 255 / 48%);
+  background: rgb(154 200 255 / 16%);
+}
+
+.atlas-shell > section[aria-label$=" focus"] {
+  align-self: end;
+  grid-area: profile;
+  padding: 1.2rem;
+}
+
+.atlas-shell > section[aria-label$=" focus"] > p:first-child {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.atlas-shell > section[aria-label$=" focus"] h2 {
+  margin: 0.35rem 0 0.6rem;
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.atlas-shell > section[aria-label$=" focus"] p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.atlas-shell > section[aria-label$=" focus"] button {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+}
+
+.atlas-shell > aside[role="dialog"] {
+  grid-area: profile;
+  min-height: 0;
+  padding: 1.2rem;
+  overflow-y: auto;
+}
+
+.atlas-shell > aside[role="dialog"] header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.atlas-shell > aside[role="dialog"] h2,
+.atlas-shell > aside[role="dialog"] h3 {
+  margin-top: 0;
+}
+
+.atlas-shell > aside[role="dialog"] header button {
+  flex: 0 0 auto;
+  padding: 0 0.75rem;
+}
+
+.atlas-shell > aside[role="dialog"] > p,
+.atlas-shell > aside[role="dialog"] dd,
+.atlas-shell > aside[role="dialog"] li {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.atlas-shell > aside[role="dialog"] dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.2rem 0;
+}
+
+.atlas-shell > aside[role="dialog"] dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgb(154 200 255 / 10%);
+}
+
+.atlas-shell > aside[role="dialog"] dt {
+  font-size: 0.78rem;
+}
+
+.atlas-shell > aside[role="dialog"] dd {
+  margin: 0;
+  text-align: right;
+}
+
+.atlas-shell > aside[role="dialog"] section {
+  margin-top: 1.35rem;
+}
+
+.atlas-shell a {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .atlas-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding: 0.8rem;
+    overflow: visible;
+  }
+
+  .atlas-brand {
+    padding: 0.3rem 0.2rem;
+  }
+
+  .atlas-shell > aside[aria-label="Explore the Solar System"],
+  .atlas-shell > aside[role="dialog"],
+  .atlas-shell > section[aria-label$=" focus"] {
+    width: 100%;
+  }
+
+  .atlas-shell > aside[aria-label="Explore the Solar System"] {
+    max-height: 40svh;
+  }
+
+  .scene-canvas,
+  .webgl-fallback {
+    flex: 0 0 auto;
+    min-height: 52svh;
+  }
+
+  .atlas-shell > section[aria-label="View controls"] {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-shell > section[aria-label="View controls"] > label,
+  .atlas-shell > section[aria-label="View controls"] > select {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 0;
+  }
+
+  .atlas-shell > aside[role="dialog"] {
+    max-height: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

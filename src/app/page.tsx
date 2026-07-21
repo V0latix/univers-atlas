@@ -1,3 +1,5 @@
+import { AtlasShell } from "@/components/atlas/AtlasShell";
+
 export default function Home() {
-  return <main><h1>Univers Atlas</h1></main>;
+  return <AtlasShell />;
 }
