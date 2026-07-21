@@ -13,7 +13,7 @@ const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(Math.max(value, minimum), maximum);
 
 export const getFocusDistance = (radius: number) =>
-  clamp(Number((radius * 5.6).toFixed(2)), 4.5, 18);
+  clamp((radius * 56) / 10, 4.5, 18);
 
 export const easeOutCubic = (progress: number) =>
   1 - (1 - clamp(progress, 0, 1)) ** 3;
