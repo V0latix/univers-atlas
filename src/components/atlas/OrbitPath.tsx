@@ -53,7 +53,7 @@ export function OrbitPath({
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial color="#315a84" transparent opacity={0.58} />
+        <lineBasicMaterial color="#315a84" transparent opacity={0.66} />
       </lineLoop>
     </group>
   );

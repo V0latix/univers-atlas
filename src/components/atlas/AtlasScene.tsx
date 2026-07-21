@@ -155,7 +155,7 @@ export function AtlasScene({
     <>
       <fog attach="fog" args={["#020812", 62, 128]} />
       <ambientLight intensity={0.24} />
-      <pointLight color="#9ac8ff" intensity={0.3} position={[0, 22, 18]} />
+      <pointLight color="#9ac8ff" intensity={0.38} position={[0, 22, 18]} />
       <pointLight color="#fbbf24" intensity={4.5} distance={92} position={[0, 0, 0]} />
 
       <CameraPreset controlsRef={controlsRef} viewMode={viewMode} />

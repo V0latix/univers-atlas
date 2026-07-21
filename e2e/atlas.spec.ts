@@ -37,7 +37,6 @@ test("finds Titan, opens its profile, and changes the view and time speed", asyn
     .getByRole("searchbox", { name: "Search celestial bodies" })
     .fill("Titan");
   await page.getByRole("button", { name: "Titan" }).click();
-  await page.getByRole("button", { name: "Open Titan profile" }).click();
   await expect(page.getByRole("dialog", { name: "Titan profile" })).toContainText(
     "Surface temperature",
   );
@@ -49,6 +48,21 @@ test("finds Titan, opens its profile, and changes the view and time speed", asyn
   const speed = page.getByLabel("Simulation speed");
   await speed.selectOption("90");
   await expect(speed).toHaveValue("90");
+});
+
+test("opens the profile for each body selected directly from the catalog", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Titan" }).click();
+  await expect(
+    page.getByRole("dialog", { name: "Titan profile" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Mars" }).click();
+  await expect(
+    page.getByRole("dialog", { name: "Mars profile" }),
+  ).toBeVisible();
 });
 
 test("shows recognizable cards beside the desktop scene", async ({ page }) => {
@@ -225,7 +239,7 @@ test("renders the nonmodal profile inline without covering tablet controls", asy
 }) => {
   await page.setViewportSize({ width: 1024, height: 768 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Open Earth profile" }).click();
+  await page.getByRole("button", { name: "Earth", exact: true }).click();
 
   const profile = page.getByRole("dialog", { name: "Earth profile" });
   const controls = page.getByRole("region", { name: "View controls" });
@@ -253,7 +267,7 @@ test("keeps mobile keyboard focus on unobscured content around the inline profil
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Open Earth profile" }).click();
+  await page.getByRole("button", { name: "Earth", exact: true }).click();
 
   const close = page.getByRole("button", { name: "Close profile" });
   await expect(close).toBeFocused();
