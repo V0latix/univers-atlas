@@ -11,6 +11,7 @@ type CelestialBodyCardProps = {
 };
 
 const kindLabels = { star: "Star", planet: "Planet", moon: "Moon" } as const;
+const gaseousBodyIds = new Set(["jupiter", "saturn", "uranus", "neptune"]);
 
 const getContext = (body: CelestialBody) =>
   body.orbitalPeriodDays === undefined
@@ -33,9 +34,18 @@ export function CelestialBodyCard({
       style={style}
       onClick={() => onSelect(body.id)}
     >
-      <span className="body-card__visual" aria-hidden="true">
-        <span className="body-card__orb" />
-        <span className="body-card__orbit" />
+      <span className="body-card__visual">
+        <span
+          aria-hidden="true"
+          className={
+            "body-card__orb body-card__orb--" +
+            body.kind +
+            (gaseousBodyIds.has(body.id) ? " body-card__orb--gaseous" : "")
+          }
+        />
+        {body.hasRings ? (
+          <span className="body-card__rings" aria-label={body.name + " rings"} />
+        ) : null}
       </span>
       <span className="body-card__content">
         <span className="body-card__kind">{kindLabels[body.kind]}</span>

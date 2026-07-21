@@ -324,16 +324,34 @@ input[type="search"] {
   width: 1.72rem;
   height: 1.72rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, white, var(--body-color) 28%, #02040a 85%);
   box-shadow: 0 0 1rem color-mix(in srgb, var(--body-color) 32%, transparent);
 }
 
-.body-card__orbit {
+.body-card__orb--star {
+  background: radial-gradient(circle at 32% 28%, #fff6c7, var(--body-color) 29%, #c7771d 76%);
+}
+
+.body-card__orb--planet,
+.body-card__orb--moon {
+  background:
+    radial-gradient(circle at 31% 27%, rgb(255 255 255 / 84%), transparent 17%),
+    radial-gradient(circle at 68% 74%, color-mix(in srgb, var(--body-color) 44%, #251b16), transparent 53%),
+    linear-gradient(135deg, var(--body-color), #3b302b 118%);
+}
+
+.body-card__orb--gaseous {
+  background:
+    linear-gradient(172deg, transparent 20%, rgb(255 244 210 / 52%) 21% 27%, transparent 28% 44%, rgb(89 50 36 / 34%) 45% 53%, transparent 54% 70%, rgb(255 239 191 / 45%) 71% 76%, transparent 77%),
+    radial-gradient(circle at 31% 27%, #fff7df, var(--body-color) 32%, #4c3127 92%);
+}
+
+.body-card__rings {
   position: absolute;
   width: 3.15rem;
-  height: 1.15rem;
-  border: 1px solid color-mix(in srgb, var(--body-color) 40%, transparent);
+  height: 1.05rem;
+  border: .14rem solid color-mix(in srgb, var(--body-color) 64%, #fff0c4);
   border-radius: 50%;
+  box-shadow: 0 0 .8rem color-mix(in srgb, var(--body-color) 38%, transparent);
   transform: rotate(-18deg);
 }
 

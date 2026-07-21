@@ -166,6 +166,7 @@ export const solarSystem: CelestialBody[] = [
     kind: "planet",
     color: "#e4cb91",
     radius: 2.05,
+    hasRings: true,
     orbitRadius: 31,
     orbitalPeriodDays: 10_759.2,
     orbitalSpeedKmS: 9.7,

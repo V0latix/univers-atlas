@@ -8,6 +8,7 @@ export type CelestialBody = {
   parentId?: string;
   color: string;
   radius: number;
+  hasRings?: boolean;
   orbitRadius?: number;
   orbitalPeriodDays?: number;
   orbitalSpeedKmS?: number;
