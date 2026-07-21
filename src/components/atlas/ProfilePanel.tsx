@@ -6,6 +6,9 @@ import { useAtlasStore } from "@/store/atlas-store";
 const withUnit = (value: number | undefined, unit: string) =>
   value === undefined ? "Data unavailable" : `${value.toLocaleString()} ${unit}`;
 
+const asReadableLabel = (value: string) =>
+  `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+
 export function ProfilePanel() {
   const selectedId = useAtlasStore((state) => state.selectedId);
   const isProfileOpen = useAtlasStore((state) => state.isProfileOpen);
@@ -15,9 +18,15 @@ export function ProfilePanel() {
   if (!isProfileOpen || !selectedBody) return null;
 
   const titleId = `${selectedBody.id}-profile-title`;
+  const parentBody = selectedBody.parentId
+    ? getBodyById(selectedBody.parentId)
+    : undefined;
+  const parentName = selectedBody.parentId
+    ? (parentBody?.name ?? asReadableLabel(selectedBody.parentId))
+    : "None";
 
   return (
-    <aside role="dialog" aria-modal="true" aria-labelledby={titleId}>
+    <aside role="dialog" aria-labelledby={titleId}>
       <header>
         <h2 id={titleId}>{selectedBody.name} profile</h2>
         <button
@@ -33,6 +42,18 @@ export function ProfilePanel() {
 
       <dl>
         <div>
+          <dt>Classification</dt>
+          <dd>{asReadableLabel(selectedBody.kind)}</dd>
+        </div>
+        <div>
+          <dt>Parent body</dt>
+          <dd>{parentName}</dd>
+        </div>
+        <div>
+          <dt>Atmosphere</dt>
+          <dd>{selectedBody.atmosphere ?? "Data unavailable"}</dd>
+        </div>
+        <div>
           <dt>Composition</dt>
           <dd>{selectedBody.composition}</dd>
         </div>
@@ -46,9 +67,7 @@ export function ProfilePanel() {
         </div>
         <div>
           <dt>Orbital period</dt>
-          <dd data-testid="orbital-period">
-            {withUnit(selectedBody.orbitalPeriodDays, "days")}
-          </dd>
+          <dd>{withUnit(selectedBody.orbitalPeriodDays, "days")}</dd>
         </div>
         <div>
           <dt>Diameter</dt>
@@ -59,7 +78,7 @@ export function ProfilePanel() {
           <dd>{withUnit(selectedBody.gravityMs2, "m/s²")}</dd>
         </div>
         <div>
-          <dt>Orbital speed</dt>
+          <dt>Orbital velocity</dt>
           <dd>{withUnit(selectedBody.orbitalSpeedKmS, "km/s")}</dd>
         </div>
         <div>
