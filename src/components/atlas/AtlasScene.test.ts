@@ -3,6 +3,7 @@ import { orbitalPosition } from "@/domain/orbits";
 import { vi } from "vitest";
 
 import {
+  getFocusTarget,
   getNextSimulationDays,
   getSceneBodyPosition,
   sceneAnchors,
@@ -37,6 +38,13 @@ it("does not compress orbit positions on the z axis", () => {
   expect(getSceneBodyPosition(earth!, days).z).toBe(
     orbitalPosition(earth!, days).z,
   );
+});
+
+it("uses the current scene body position as the camera focus target", () => {
+  const earth = solarSystem.find((body) => body.id === "earth");
+
+  expect(earth).toBeDefined();
+  expect(getFocusTarget(earth!, 24)).toEqual(getSceneBodyPosition(earth!, 24));
 });
 
 it("stops automatic orbital-time advancement for reduced motion", () => {

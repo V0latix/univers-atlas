@@ -26,6 +26,7 @@ export function canUseWebGL2() {
 
 export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
   const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
+  const [focusRevision, setFocusRevision] = useState(0);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
         camera={{ position: [0, 42, 70], fov: 48 }}
         tabIndex={0}
       >
-        <AtlasScene controlsRef={controlsRef} />
+        <AtlasScene controlsRef={controlsRef} focusRevision={focusRevision} />
         <OrbitControls
           ref={controlsRef}
           enablePan
@@ -64,11 +65,12 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
             MIDDLE: MOUSE.DOLLY,
             RIGHT: MOUSE.ROTATE,
           }}
-          minDistance={8}
-          maxDistance={150}
+          minDistance={1.5}
+          maxDistance={220}
           zoomSpeed={0.85}
           panSpeed={0.8}
           rotateSpeed={0.65}
+          onStart={() => setFocusRevision((revision) => revision + 1)}
         />
       </Canvas>
     </section>

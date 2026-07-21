@@ -17,6 +17,12 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useAtlasStore } from "@/store/atlas-store";
 
 import { CelestialBodyMesh } from "./CelestialBodyMesh";
+import {
+  createFocusTransition,
+  easeOutCubic,
+  type CameraFocusTransition,
+  type VectorTuple,
+} from "./camera-focus";
 import { OrbitPath } from "./OrbitPath";
 
 const ORBIT_ECCENTRICITY = 1;
@@ -85,6 +91,13 @@ export function getSceneBodyPosition(
   };
 }
 
+export function getFocusTarget(
+  body: CelestialBody,
+  simulationDays: number,
+): OrbitPoint {
+  return getSceneBodyPosition(body, simulationDays);
+}
+
 function CameraPreset({
   controlsRef,
   viewMode,
@@ -139,10 +152,98 @@ function GuidedCamera({
   return null;
 }
 
-export function AtlasScene({
+function getVectorTuple({ x, y, z }: { x: number; y: number; z: number }): VectorTuple {
+  return [x, y, z];
+}
+
+function SelectedBodyFocus({
   controlsRef,
+  focusRevision,
+  selectedId,
+  simulationDaysRef,
+  prefersReducedMotion,
 }: {
   controlsRef: RefObject<OrbitControlsImpl | null>;
+  focusRevision: number;
+  selectedId: string;
+  simulationDaysRef: MutableRefObject<number>;
+  prefersReducedMotion: boolean;
+}) {
+  const transitionRef = useRef<CameraFocusTransition | null>(null);
+  const initializedFocusRevisionRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const controls = controlsRef.current;
+    const selectedBody = bodiesById.get(selectedId);
+    if (!controls || !selectedBody) return;
+
+    const focusTarget = getFocusTarget(selectedBody, simulationDaysRef.current);
+    const transition = createFocusTransition({
+      cameraPosition: getVectorTuple(controls.object.position),
+      currentTarget: getVectorTuple(controls.target),
+      bodyPosition: [focusTarget.x, focusTarget.y, focusTarget.z],
+      bodyRadius: selectedBody.radius,
+      startedAt: Date.now(),
+    });
+
+    if (prefersReducedMotion) {
+      controls.object.position.set(...transition.endPosition);
+      controls.target.set(...transition.target);
+      controls.update();
+      transitionRef.current = null;
+      return;
+    }
+
+    transitionRef.current = transition;
+  }, [controlsRef, prefersReducedMotion, selectedId, simulationDaysRef]);
+
+  useEffect(() => {
+    if (initializedFocusRevisionRef.current === null) {
+      initializedFocusRevisionRef.current = focusRevision;
+      return;
+    }
+
+    transitionRef.current = null;
+    initializedFocusRevisionRef.current = focusRevision;
+  }, [focusRevision]);
+
+  useFrame(() => {
+    const transition = transitionRef.current;
+    const controls = controlsRef.current;
+    if (!transition || !controls) return;
+
+    const progress = easeOutCubic(
+      (Date.now() - transition.startedAt) / transition.durationMs,
+    );
+    const interpolate = (start: number, end: number) =>
+      start + (end - start) * progress;
+
+    controls.object.position.set(
+      interpolate(transition.startPosition[0], transition.endPosition[0]),
+      interpolate(transition.startPosition[1], transition.endPosition[1]),
+      interpolate(transition.startPosition[2], transition.endPosition[2]),
+    );
+    controls.target.set(
+      interpolate(transition.startTarget[0], transition.target[0]),
+      interpolate(transition.startTarget[1], transition.target[1]),
+      interpolate(transition.startTarget[2], transition.target[2]),
+    );
+    controls.update();
+
+    if (progress === 1) {
+      transitionRef.current = null;
+    }
+  });
+
+  return null;
+}
+
+export function AtlasScene({
+  controlsRef,
+  focusRevision,
+}: {
+  controlsRef: RefObject<OrbitControlsImpl | null>;
+  focusRevision: number;
 }) {
   const selectedId = useAtlasStore((state) => state.selectedId);
   const viewMode = useAtlasStore((state) => state.viewMode);
@@ -159,6 +260,14 @@ export function AtlasScene({
       <pointLight color="#fbbf24" intensity={4.5} distance={92} position={[0, 0, 0]} />
 
       <CameraPreset controlsRef={controlsRef} viewMode={viewMode} />
+
+      <SelectedBodyFocus
+        controlsRef={controlsRef}
+        focusRevision={focusRevision}
+        selectedId={selectedId}
+        simulationDaysRef={simulationDaysRef}
+        prefersReducedMotion={prefersReducedMotion}
+      />
 
       <GuidedCamera
         selectedId={selectedId}

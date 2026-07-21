@@ -88,12 +88,13 @@ it("mounts the labelled scene after WebGL2 is available", () => {
       MIDDLE: MOUSE.DOLLY,
       RIGHT: MOUSE.ROTATE,
     },
-    minDistance: 8,
-    maxDistance: 150,
+    minDistance: 1.5,
+    maxDistance: 220,
     zoomSpeed: 0.85,
     panSpeed: 0.8,
     rotateSpeed: 0.65,
   });
+  expect(orbitControlsState.props?.onStart).toEqual(expect.any(Function));
   expect(onWebglUnavailable).not.toHaveBeenCalled();
 });
 
