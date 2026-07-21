@@ -620,12 +620,12 @@ Add these exact README sections: `Requirements` (Node.js LTS), `Local developmen
 Run: `npm run lint && npm run test && npx playwright test && npm run build && git diff --check`  
 Expected: every command exits with status 0 and no whitespace errors are reported.
 
-- [ ] **Step 5: Commit and push the finished implementation.**
+- [ ] **Step 5: Commit and push the finished implementation branch.**
 
 ```bash
 git add e2e/atlas.spec.ts README.md docs/TODO.md
 git commit -m "test: verify Solar System exploration journey"
-git push origin main
+git push -u origin feat/solar-system-atlas
 ```
 
 - [ ] **Step 6: Deploy to Vercel.**

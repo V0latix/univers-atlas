@@ -8,6 +8,6 @@ export default defineConfig({
   webServer: {
     command: "npm run dev -- --port 3100",
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
 });
