@@ -19,6 +19,15 @@ describe("FocusCard and ProfilePanel", () => {
   beforeEach(() => useAtlasStore.getState().reset());
   afterEach(() => vi.restoreAllMocks());
 
+  it("shows key facts in the compact selected-body summary", () => {
+    useAtlasStore.getState().selectBody("titan");
+    render(<FocusCard />);
+
+    expect(screen.getByText("5,150 km")).toBeInTheDocument();
+    expect(screen.getByText("-179 °C")).toBeInTheDocument();
+    expect(screen.getByText("15.945 days")).toBeInTheDocument();
+  });
+
   it("opens the selected body's labelled profile from the focus card", async () => {
     const user = userEvent.setup();
     useAtlasStore.getState().selectBody("titan");

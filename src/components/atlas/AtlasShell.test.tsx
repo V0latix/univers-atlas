@@ -13,3 +13,15 @@ it("keeps object search available when WebGL cannot be used", async () => {
     screen.getByText("3D view is unavailable in this browser."),
   ).toBeInTheDocument();
 });
+
+it("renders the cockpit identity and persistent navigation", async () => {
+  render(<AtlasShell forceWebglFallback />);
+
+  expect(screen.getByRole("banner")).toHaveClass("atlas-topbar");
+  expect(screen.getByText("Live simulation")).toBeInTheDocument();
+  expect(
+    await screen.findByRole("complementary", {
+      name: "Explore the Solar System",
+    }),
+  ).toHaveClass("explore-panel");
+});

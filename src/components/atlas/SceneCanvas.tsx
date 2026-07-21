@@ -43,10 +43,6 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
     <section
       aria-label="Interactive Solar System scene"
       className="scene-canvas"
-      style={{
-        background:
-          "radial-gradient(ellipse at 18% 14%, rgb(36 84 137 / 52%) 0%, transparent 46%), radial-gradient(ellipse at 82% 78%, rgb(13 42 82 / 62%) 0%, transparent 54%), linear-gradient(145deg, #050918 0%, #07182e 52%, #02050d 100%)",
-      }}
     >
       <Canvas gl={{ alpha: true }} camera={{ position: [0, 42, 70], fov: 48 }}>
         <AtlasScene />

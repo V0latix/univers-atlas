@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { X } from "lucide-react";
 
 import { getBodyById } from "@/data/solar-system";
 import { useAtlasStore } from "@/store/atlas-store";
@@ -51,7 +52,11 @@ export function ProfilePanel() {
     : "None";
 
   return (
-    <aside role="dialog" aria-labelledby={titleId}>
+    <aside
+      role="dialog"
+      aria-labelledby={titleId}
+      className="profile-panel"
+    >
       <header>
         <h2 id={titleId}>{selectedBody.name} profile</h2>
         <button
@@ -60,7 +65,7 @@ export function ProfilePanel() {
           aria-label="Close profile"
           onClick={closeProfile}
         >
-          Close
+          <X aria-hidden="true" />
         </button>
       </header>
 
