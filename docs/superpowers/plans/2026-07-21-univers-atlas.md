@@ -389,7 +389,7 @@ git commit -m "feat: add atlas interaction state"
 
 **Interfaces:**
 - Consumes: `solarSystem`, `orbitalPosition`, and `useAtlasStore`.
-- Produces: `SceneCanvas({ onWebglUnavailable: () => void })`, which preflights WebGL2 before mounting a Canvas and reports any canvas-creation failure to the fallback owner.
+- Produces: `SceneCanvas({ onWebglUnavailable: () => void })`, which preflights WebGL2 after hydration and only mounts a Canvas when the browser supports it.
 
 - [ ] **Step 1: Write the failing canvas fallback test.**
 
@@ -422,9 +422,13 @@ import { Canvas } from "@react-three/fiber";
 import { AtlasScene } from "./AtlasScene";
 
 export function SceneCanvas({ onWebglUnavailable }: { onWebglUnavailable: () => void }) {
-  const [webglAvailable] = useState(() => canUseWebGL2());
-  useEffect(() => { if (!webglAvailable) onWebglUnavailable(); }, [onWebglUnavailable, webglAvailable]);
-  if (!webglAvailable) return null;
+  const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
+  useEffect(() => {
+    const available = canUseWebGL2();
+    setWebglAvailable(available);
+    if (!available) onWebglUnavailable();
+  }, [onWebglUnavailable]);
+  if (webglAvailable !== true) return null;
   return <section aria-label="Interactive Solar System scene" className="scene-canvas">
     <Canvas gl={{ alpha: true }} camera={{ position: [0, 42, 70], fov: 48 }}>
       <AtlasScene />
@@ -433,7 +437,7 @@ export function SceneCanvas({ onWebglUnavailable }: { onWebglUnavailable: () => 
 }
 ```
 
-Implement `canUseWebGL2()` with a browser-only `canvas.getContext("webgl2")` check, and wrap Canvas rendering in an error boundary that calls `onWebglUnavailable` when renderer creation throws. `AtlasScene` must map `solarSystem` into clickable meshes and orbit lines, use `useFrame` with `secondsToSimulationDays`, skip time progression while `isPaused`, and update a damped camera target whenever `selectedId` or `viewMode` changes. Top view uses `[0, 85, 0.1]`; side view uses `[0, 10, 90]`; 3D view uses `[0, 42, 70]`. `CelestialBodyMesh` calls `selectBody(body.id)` on click and uses its `color` and `radius`; `OrbitPath` renders a muted blue, non-dotted elliptical line. Resolve Charon’s external Pluto parent through a non-profile scene anchor positioned outside the Sun, so Charon and its orbit are visible without adding Pluto to the public catalog. Keep `scene.background` transparent and apply a non-repeating deep spatial gradient to the scene container behind the alpha-enabled canvas.
+Implement `canUseWebGL2()` with a browser-only `canvas.getContext("webgl2")` check. Start with the SSR-stable neutral availability state `null`, probe only in an effect after hydration, and do not mount Canvas unless the result is `true`; a `false` result calls `onWebglUnavailable` so the fallback owner keeps search and profiles available. `AtlasScene` must map `solarSystem` into clickable meshes and orbit lines, use `useFrame` with `secondsToSimulationDays`, skip time progression while `isPaused`, and update a damped camera target whenever `selectedId` or `viewMode` changes. Top view uses `[0, 85, 0.1]`; side view uses `[0, 10, 90]`; 3D view uses `[0, 42, 70]`. `CelestialBodyMesh` calls `selectBody(body.id)` on click and uses its `color` and `radius`; `OrbitPath` renders a muted blue, non-dotted elliptical line. Resolve Charon’s external Pluto parent through a non-profile scene anchor positioned outside the Sun, so Charon and its orbit are visible without adding Pluto to the public catalog. Keep `scene.background` transparent and apply a non-repeating deep spatial gradient to the scene container behind the alpha-enabled canvas.
 
 - [ ] **Step 4: Run test and manually verify views.**
 

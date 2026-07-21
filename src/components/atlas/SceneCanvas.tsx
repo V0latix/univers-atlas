@@ -1,42 +1,13 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Component, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import { AtlasScene } from "./AtlasScene";
 
 type SceneCanvasProps = {
   onWebglUnavailable: () => void;
 };
-
-type CanvasErrorBoundaryProps = {
-  children: ReactNode;
-  onWebglUnavailable: () => void;
-};
-
-type CanvasErrorBoundaryState = {
-  hasError: boolean;
-};
-
-class CanvasErrorBoundary extends Component<
-  CanvasErrorBoundaryProps,
-  CanvasErrorBoundaryState
-> {
-  state: CanvasErrorBoundaryState = { hasError: false };
-
-  static getDerivedStateFromError(): CanvasErrorBoundaryState {
-    return { hasError: true };
-  }
-
-  componentDidCatch() {
-    this.props.onWebglUnavailable();
-  }
-
-  render() {
-    return this.state.hasError ? null : this.props.children;
-  }
-}
 
 export function canUseWebGL2() {
   if (typeof document === "undefined") {
@@ -51,15 +22,20 @@ export function canUseWebGL2() {
 }
 
 export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
-  const [webglAvailable] = useState(() => canUseWebGL2());
+  const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!webglAvailable) {
+    const available = canUseWebGL2();
+    // This external capability is intentionally read only after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setWebglAvailable(available);
+
+    if (!available) {
       onWebglUnavailable();
     }
-  }, [onWebglUnavailable, webglAvailable]);
+  }, [onWebglUnavailable]);
 
-  if (!webglAvailable) {
+  if (webglAvailable !== true) {
     return null;
   }
 
@@ -72,11 +48,9 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
           "radial-gradient(ellipse at 18% 14%, rgb(36 84 137 / 52%) 0%, transparent 46%), radial-gradient(ellipse at 82% 78%, rgb(13 42 82 / 62%) 0%, transparent 54%), linear-gradient(145deg, #050918 0%, #07182e 52%, #02050d 100%)",
       }}
     >
-      <CanvasErrorBoundary onWebglUnavailable={onWebglUnavailable}>
-        <Canvas gl={{ alpha: true }} camera={{ position: [0, 42, 70], fov: 48 }}>
-          <AtlasScene />
-        </Canvas>
-      </CanvasErrorBoundary>
+      <Canvas gl={{ alpha: true }} camera={{ position: [0, 42, 70], fov: 48 }}>
+        <AtlasScene />
+      </Canvas>
     </section>
   );
 }
