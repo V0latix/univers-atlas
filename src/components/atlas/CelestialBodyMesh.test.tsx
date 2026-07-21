@@ -10,7 +10,7 @@ vi.mock("@react-three/fiber", () => ({ useFrame: () => undefined }));
 const getBodyPosition = () => ({ x: 0, y: 0, z: 0 });
 const simulationDaysRef = { current: 0 };
 
-it("renders a ring geometry only for Saturn", () => {
+it("layers Saturn's rings behind and in front of the globe", () => {
   const { container, rerender } = render(
     <CelestialBodyMesh
       body={getBodyById("saturn")!}
@@ -19,7 +19,14 @@ it("renders a ring geometry only for Saturn", () => {
     />,
   );
 
-  expect(container.querySelector("ringGeometry")).toBeInTheDocument();
+  const ringGeometries = container.querySelectorAll("ringGeometry");
+  expect(ringGeometries).toHaveLength(2);
+  expect(
+    container.querySelector('[data-ring-layer="rear"]'),
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector('[data-ring-layer="front"]'),
+  ).toHaveAttribute("renderOrder", "3");
 
   rerender(
     <CelestialBodyMesh
