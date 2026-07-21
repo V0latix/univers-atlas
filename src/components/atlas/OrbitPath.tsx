@@ -8,7 +8,7 @@ import type { Group } from "three";
 import type { OrbitPoint } from "@/domain/orbits";
 import type { CelestialBody } from "@/domain/types";
 
-const ORBIT_ECCENTRICITY = 0.82;
+const ORBIT_ECCENTRICITY = 1;
 const ORBIT_SEGMENTS = 128;
 
 type OrbitPathProps = {

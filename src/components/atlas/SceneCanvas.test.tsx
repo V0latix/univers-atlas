@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import type { ReactNode } from "react";
+import { MOUSE } from "three";
 import { afterEach, beforeEach, vi } from "vitest";
 
 import { SceneCanvas } from "./SceneCanvas";
@@ -9,6 +10,9 @@ const canvasState = vi.hoisted(() => ({
   gl: undefined as { alpha?: boolean } | undefined,
   tabIndex: undefined as number | undefined,
   renderCount: 0,
+}));
+const orbitControlsState = vi.hoisted(() => ({
+  props: undefined as Record<string, unknown> | undefined,
 }));
 
 vi.mock("@react-three/fiber", () => ({
@@ -28,12 +32,19 @@ vi.mock("@react-three/fiber", () => ({
     return <div data-testid="fiber-canvas">{children}</div>;
   },
 }));
+vi.mock("@react-three/drei", () => ({
+  OrbitControls: (props: Record<string, unknown>) => {
+    orbitControlsState.props = props;
+    return <div data-testid="orbit-controls" />;
+  },
+}));
 vi.mock("./AtlasScene", () => ({ AtlasScene: () => <div /> }));
 
 beforeEach(() => {
   canvasState.gl = undefined;
   canvasState.tabIndex = undefined;
   canvasState.renderCount = 0;
+  orbitControlsState.props = undefined;
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
     {} as WebGL2RenderingContext,
   );
@@ -68,6 +79,21 @@ it("mounts the labelled scene after WebGL2 is available", () => {
   expect(canvasState.renderCount).toBe(1);
   expect(canvasState.gl).toEqual({ alpha: true });
   expect(canvasState.tabIndex).toBe(0);
+  expect(orbitControlsState.props).toMatchObject({
+    enablePan: true,
+    enableZoom: true,
+    enableRotate: true,
+    mouseButtons: {
+      LEFT: MOUSE.PAN,
+      MIDDLE: MOUSE.DOLLY,
+      RIGHT: MOUSE.ROTATE,
+    },
+    minDistance: 8,
+    maxDistance: 150,
+    zoomSpeed: 0.85,
+    panSpeed: 0.8,
+    rotateSpeed: 0.65,
+  });
   expect(onWebglUnavailable).not.toHaveBeenCalled();
 });
 

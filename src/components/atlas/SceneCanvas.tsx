@@ -1,7 +1,10 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { OrbitControls } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
+import { MOUSE } from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import { AtlasScene } from "./AtlasScene";
 
@@ -23,6 +26,7 @@ export function canUseWebGL2() {
 
 export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
   const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   useEffect(() => {
     const available = canUseWebGL2();
@@ -49,7 +53,23 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
         camera={{ position: [0, 42, 70], fov: 48 }}
         tabIndex={0}
       >
-        <AtlasScene />
+        <AtlasScene controlsRef={controlsRef} />
+        <OrbitControls
+          ref={controlsRef}
+          enablePan
+          enableZoom
+          enableRotate
+          mouseButtons={{
+            LEFT: MOUSE.PAN,
+            MIDDLE: MOUSE.DOLLY,
+            RIGHT: MOUSE.ROTATE,
+          }}
+          minDistance={8}
+          maxDistance={150}
+          zoomSpeed={0.85}
+          panSpeed={0.8}
+          rotateSpeed={0.65}
+        />
       </Canvas>
     </section>
   );

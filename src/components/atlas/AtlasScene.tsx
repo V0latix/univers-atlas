@@ -2,8 +2,8 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import type { MutableRefObject } from "react";
-import { Vector3 } from "three";
+import type { MutableRefObject, RefObject } from "react";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import { solarSystem } from "@/data/solar-system";
 import {
@@ -19,7 +19,7 @@ import { useAtlasStore } from "@/store/atlas-store";
 import { CelestialBodyMesh } from "./CelestialBodyMesh";
 import { OrbitPath } from "./OrbitPath";
 
-const ORBIT_ECCENTRICITY = 0.82;
+const ORBIT_ECCENTRICITY = 1;
 const CAMERA_POSITIONS: Record<ViewMode, [number, number, number]> = {
   top: [0, 85, 0.1],
   side: [0, 10, 90],
@@ -49,11 +49,6 @@ export function getNextSimulationDays({
 
   return currentDays + secondsToSimulationDays(deltaSeconds, timeMultiplier);
 }
-
-export const cameraInterpolationFactor = (
-  deltaSeconds: number,
-  prefersReducedMotion: boolean,
-) => (prefersReducedMotion ? 1 : 1 - Math.exp(-4 * deltaSeconds));
 
 function getSceneParentPosition(
   parentId: string,
@@ -90,39 +85,40 @@ export function getSceneBodyPosition(
   };
 }
 
+function CameraPreset({
+  controlsRef,
+  viewMode,
+}: {
+  controlsRef: RefObject<OrbitControlsImpl | null>;
+  viewMode: ViewMode;
+}) {
+  useEffect(() => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+
+    const [x, y, z] = CAMERA_POSITIONS[viewMode];
+    controls.object.position.set(x, y, z);
+    controls.target.set(0, 0, 0);
+    controls.update();
+  }, [controlsRef, viewMode]);
+
+  return null;
+}
+
 function GuidedCamera({
   selectedId,
-  viewMode,
   isPaused,
   timeMultiplier,
   simulationDaysRef,
   prefersReducedMotion,
 }: {
   selectedId: string;
-  viewMode: ViewMode;
   isPaused: boolean;
   timeMultiplier: TimeMultiplier;
   simulationDaysRef: MutableRefObject<number>;
   prefersReducedMotion: boolean;
 }) {
-  const desiredCameraPosition = useRef(new Vector3(...CAMERA_POSITIONS[viewMode]));
-  const desiredFocus = useRef(new Vector3());
-  const cameraFocus = useRef(new Vector3());
-
-  useEffect(() => {
-    desiredCameraPosition.current.set(...CAMERA_POSITIONS[viewMode]);
-    const selectedBody = bodiesById.get(selectedId);
-
-    if (selectedBody) {
-      const position = getSceneBodyPosition(
-        selectedBody,
-        simulationDaysRef.current,
-      );
-      desiredFocus.current.set(position.x, position.y, position.z);
-    }
-  }, [selectedId, simulationDaysRef, viewMode]);
-
-  useFrame(({ camera }, delta) => {
+  useFrame((_, delta) => {
     simulationDaysRef.current = getNextSimulationDays({
       currentDays: simulationDaysRef.current,
       deltaSeconds: delta,
@@ -133,23 +129,21 @@ function GuidedCamera({
 
     const selectedBody = bodiesById.get(selectedId);
     if (selectedBody) {
-      const position = getSceneBodyPosition(
+      getSceneBodyPosition(
         selectedBody,
         simulationDaysRef.current,
       );
-      desiredFocus.current.set(position.x, position.y, position.z);
     }
-
-    const damping = cameraInterpolationFactor(delta, prefersReducedMotion);
-    camera.position.lerp(desiredCameraPosition.current, damping);
-    cameraFocus.current.lerp(desiredFocus.current, damping);
-    camera.lookAt(cameraFocus.current);
   });
 
   return null;
 }
 
-export function AtlasScene() {
+export function AtlasScene({
+  controlsRef,
+}: {
+  controlsRef: RefObject<OrbitControlsImpl | null>;
+}) {
   const selectedId = useAtlasStore((state) => state.selectedId);
   const viewMode = useAtlasStore((state) => state.viewMode);
   const isPaused = useAtlasStore((state) => state.isPaused);
@@ -164,9 +158,10 @@ export function AtlasScene() {
       <pointLight color="#9ac8ff" intensity={0.3} position={[0, 22, 18]} />
       <pointLight color="#fbbf24" intensity={4.5} distance={92} position={[0, 0, 0]} />
 
+      <CameraPreset controlsRef={controlsRef} viewMode={viewMode} />
+
       <GuidedCamera
         selectedId={selectedId}
-        viewMode={viewMode}
         isPaused={isPaused}
         timeMultiplier={timeMultiplier}
         simulationDaysRef={simulationDaysRef}

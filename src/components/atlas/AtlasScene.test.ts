@@ -3,7 +3,6 @@ import { orbitalPosition } from "@/domain/orbits";
 import { vi } from "vitest";
 
 import {
-  cameraInterpolationFactor,
   getNextSimulationDays,
   getSceneBodyPosition,
   sceneAnchors,
@@ -22,10 +21,21 @@ it("positions Charon relative to the scene-only Pluto anchor", () => {
   expect(worldPosition).toEqual({
     x: sceneAnchors.pluto.x + localPosition.x,
     y: sceneAnchors.pluto.y + localPosition.y,
-    z: sceneAnchors.pluto.z + localPosition.z * 0.82,
+    z: sceneAnchors.pluto.z + localPosition.z,
   });
   expect(Math.hypot(worldPosition.x, worldPosition.z)).toBeGreaterThan(
     solarSystem[0].radius + charon!.orbitRadius!,
+  );
+});
+
+it("does not compress orbit positions on the z axis", () => {
+  const earth = solarSystem.find((body) => body.id === "earth");
+
+  expect(earth).toBeDefined();
+
+  const days = earth!.orbitalPeriodDays! / 4;
+  expect(getSceneBodyPosition(earth!, days).z).toBe(
+    orbitalPosition(earth!, days).z,
   );
 });
 
@@ -39,10 +49,4 @@ it("stops automatic orbital-time advancement for reduced motion", () => {
       prefersReducedMotion: true,
     }),
   ).toBe(120);
-});
-
-it("snaps camera interpolation for reduced motion", () => {
-  expect(cameraInterpolationFactor(0.016, true)).toBe(1);
-  expect(cameraInterpolationFactor(0.016, false)).toBeGreaterThan(0);
-  expect(cameraInterpolationFactor(0.016, false)).toBeLessThan(1);
 });
