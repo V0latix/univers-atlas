@@ -35,3 +35,36 @@ test("finds Titan, opens its profile, and changes the view and time speed", asyn
   await speed.selectOption("90");
   await expect(speed).toHaveValue("90");
 });
+
+test("shows recognizable cards beside the desktop scene", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const earth = page.getByRole("button", { name: "Earth", exact: true });
+  await expect(earth).toBeVisible();
+  await expect(earth).toHaveAttribute("aria-pressed", "true");
+  await expect(earth.locator(".body-card__orb")).toBeVisible();
+
+  const panel = await page.locator(".explore-panel").boundingBox();
+  const stage = await page.locator(".atlas-stage").boundingBox();
+  expect(panel).not.toBeNull();
+  expect(stage).not.toBeNull();
+  expect(panel!.x + panel!.width).toBeLessThanOrEqual(stage!.x);
+  expect(stage!.width).toBeGreaterThan(700);
+});
+
+test("turns the body catalog into a horizontal mobile rail", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const list = page.locator(".body-list");
+  await expect(
+    page.getByRole("button", { name: "Earth", exact: true }),
+  ).toBeVisible();
+  expect(
+    await list.evaluate((element) => element.scrollWidth > element.clientWidth),
+  ).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    390,
+  );
+});
