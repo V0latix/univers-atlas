@@ -19,9 +19,17 @@ export function CelestialBodyPortrait({ body }: { body: CelestialBody }): JSX.El
         <span
           className={`celestial-portrait__rings celestial-portrait__rings--${presentation.ringStyle}`}
           aria-label={`${body.name} rings`}
+          data-ring-layer="rear"
         />
       ) : null}
       <span className="celestial-portrait__globe" aria-hidden="true" />
+      {presentation.ringStyle ? (
+        <span
+          aria-hidden="true"
+          className={`celestial-portrait__rings celestial-portrait__rings--${presentation.ringStyle} celestial-portrait__rings--front`}
+          data-ring-layer="front"
+        />
+      ) : null}
     </div>
   );
 }

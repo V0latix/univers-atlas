@@ -8,8 +8,11 @@ import { CelestialBodyPortrait } from "./CelestialBodyPortrait";
 it("renders a labelled Saturn portrait with rings", () => {
   render(<CelestialBodyPortrait body={getBodyById("saturn")!} />);
 
-  expect(
-    screen.getByRole("img", { name: "Saturn illustration" }),
-  ).toBeInTheDocument();
+  const portrait = screen.getByRole("img", { name: "Saturn illustration" });
+
+  expect(portrait).toBeInTheDocument();
   expect(screen.getByLabelText("Saturn rings")).toBeInTheDocument();
+  expect(
+    portrait.querySelector('[data-ring-layer="front"]'),
+  ).toBeInTheDocument();
 });

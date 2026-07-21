@@ -786,17 +786,7 @@ input[type="search"] {
 }
 
 .celestial-portrait--icy-bands .celestial-portrait__globe::after {
-  top: 42%;
-  right: auto;
-  bottom: auto;
-  left: -.45rem;
-  width: 4.7rem;
-  height: 1.4rem;
-  border: .18rem solid color-mix(in srgb, var(--body-color) 62%, #fff0c4);
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: 0 0 .8rem color-mix(in srgb, var(--body-color) 45%, transparent);
-  transform: rotate(-18deg);
+  content: none;
 }
 
 .celestial-portrait--cratered-rock .celestial-portrait__globe::before {
@@ -837,6 +827,11 @@ input[type="search"] {
   border: .07rem solid rgb(255 246 214 / 68%);
   border-radius: inherit;
   content: "";
+}
+
+.celestial-portrait__rings--front {
+  z-index: 2;
+  clip-path: inset(50% 0 0);
 }
 
 .profile-panel > p,
