@@ -21,7 +21,9 @@ export function CelestialBodyMesh({
   simulationDaysRef,
 }: CelestialBodyMeshProps) {
   const meshRef = useRef<Mesh>(null);
-  const selectBody = useAtlasStore((state) => state.selectBody);
+  const selectAndOpenProfile = useAtlasStore(
+    (state) => state.selectAndOpenProfile,
+  );
 
   useFrame(() => {
     const position = getBodyPosition(body, simulationDaysRef.current);
@@ -35,7 +37,7 @@ export function CelestialBodyMesh({
       ref={meshRef}
       onClick={(event) => {
         event.stopPropagation();
-        selectBody(body.id);
+        selectAndOpenProfile(body.id);
       }}
     >
       <sphereGeometry args={[body.radius, 32, 24]} />

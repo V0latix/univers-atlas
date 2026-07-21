@@ -21,6 +21,7 @@ describe("ExplorePanel", () => {
 
     expect(screen.getByText("Titan selected")).toBeInTheDocument();
     expect(useAtlasStore.getState().selectedId).toBe("titan");
+    expect(useAtlasStore.getState().isProfileOpen).toBe(true);
     expect(screen.queryByRole("button", { name: "Earth" })).not.toBeInTheDocument();
   });
 

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -6,6 +6,7 @@ import * as solarSystemData from "@/data/solar-system";
 import { useAtlasStore } from "@/store/atlas-store";
 
 import { FocusCard } from "./FocusCard";
+import { ExplorePanel } from "./ExplorePanel";
 import { ProfilePanel } from "./ProfilePanel";
 
 const expectProfileField = (label: string, value: string) => {
@@ -28,51 +29,50 @@ describe("FocusCard and ProfilePanel", () => {
     expect(screen.getByText("15.945 days")).toBeInTheDocument();
   });
 
-  it("opens the selected body's labelled profile from the focus card", async () => {
+  it("opens the selected body's labelled profile from its catalogue card", async () => {
     const user = userEvent.setup();
-    useAtlasStore.getState().selectBody("titan");
     render(
       <>
-        <FocusCard />
+        <ExplorePanel />
         <ProfilePanel />
       </>,
     );
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    const trigger = screen.getByRole("button", {
-      name: "Open Titan profile",
-    });
-    await user.click(trigger);
+    await user.click(screen.getByRole("button", { name: "Titan" }));
 
     const dialog = screen.getByRole("dialog", { name: "Titan profile" });
 
     expect(dialog).toBeInTheDocument();
     expect(dialog).not.toHaveAttribute("aria-modal");
     expect(screen.getByRole("button", { name: "Close profile" })).toHaveFocus();
-    expect(trigger).toBeDisabled();
-    expect(trigger.closest("section")).toHaveAttribute("hidden");
     expect(useAtlasStore.getState().isProfileOpen).toBe(true);
   });
 
-  it("closes on Escape and restores focus to the dynamic profile trigger", async () => {
+  it("updates an already open profile after selecting another astre", () => {
+    useAtlasStore.getState().selectAndOpenProfile("titan");
+    render(<ProfilePanel />);
+    act(() => useAtlasStore.getState().selectAndOpenProfile("mars"));
+
+    expect(
+      screen.getByRole("dialog", { name: "Mars profile" }),
+    ).toBeInTheDocument();
+  });
+
+  it("closes on Escape and restores focus to the selected catalogue card", async () => {
     const user = userEvent.setup();
-    useAtlasStore.getState().selectBody("titan");
     render(
       <>
-        <FocusCard />
+        <ExplorePanel />
         <ProfilePanel />
       </>,
     );
-    const trigger = screen.getByRole("button", {
-      name: "Open Titan profile",
-    });
+    const trigger = screen.getByRole("button", { name: "Titan" });
 
     await user.click(trigger);
     await user.keyboard("{Escape}");
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(trigger).not.toBeDisabled();
-    expect(trigger.closest("section")).not.toHaveAttribute("hidden");
     expect(trigger).toHaveFocus();
   });
 
@@ -112,16 +112,13 @@ describe("FocusCard and ProfilePanel", () => {
 
   it("closes the profile with an accessible button", async () => {
     const user = userEvent.setup();
-    useAtlasStore.getState().selectBody("titan");
     render(
       <>
-        <FocusCard />
+        <ExplorePanel />
         <ProfilePanel />
       </>,
     );
-    const trigger = screen.getByRole("button", {
-      name: "Open Titan profile",
-    });
+    const trigger = screen.getByRole("button", { name: "Titan" });
 
     await user.click(trigger);
 

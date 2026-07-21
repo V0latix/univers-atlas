@@ -19,16 +19,26 @@ export function ProfilePanel() {
   const setProfileOpen = useAtlasStore((state) => state.setProfileOpen);
   const selectedBody = getBodyById(selectedId);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
 
   const closeProfile = useCallback(() => {
     setProfileOpen(false);
     queueMicrotask(() => {
-      document.getElementById(`profile-trigger-${selectedId}`)?.focus();
+      const lastFocusedElement = lastFocusedElementRef.current;
+
+      if (lastFocusedElement?.isConnected) {
+        lastFocusedElement.focus();
+      }
     });
-  }, [selectedId, setProfileOpen]);
+  }, [setProfileOpen]);
 
   useEffect(() => {
     if (!isProfileOpen || !selectedBody) return;
+
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLElement) {
+      lastFocusedElementRef.current = activeElement;
+    }
 
     closeButtonRef.current?.focus();
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -40,7 +50,7 @@ export function ProfilePanel() {
     document.addEventListener("keydown", closeOnEscape);
 
     return () => document.removeEventListener("keydown", closeOnEscape);
-  }, [closeProfile, isProfileOpen, selectedBody]);
+  }, [closeProfile, isProfileOpen, selectedBody, selectedId]);
 
   if (!isProfileOpen || !selectedBody) return null;
 

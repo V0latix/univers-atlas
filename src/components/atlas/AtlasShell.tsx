@@ -6,7 +6,6 @@ import { Orbit } from "lucide-react";
 import { solarSystem } from "@/data/solar-system";
 
 import { ExplorePanel } from "./ExplorePanel";
-import { FocusCard } from "./FocusCard";
 import { ProfilePanel } from "./ProfilePanel";
 import { SceneCanvas } from "./SceneCanvas";
 import { ViewControls } from "./ViewControls";
@@ -48,7 +47,6 @@ export function AtlasShell({ forceWebglFallback = false }: AtlasShellProps) {
             <SceneCanvas onWebglUnavailable={showFallback} />
           )}
         </div>
-        <FocusCard />
         <ViewControls />
       </div>
       <ExplorePanel />

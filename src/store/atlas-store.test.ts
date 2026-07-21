@@ -5,12 +5,21 @@ import { useAtlasStore } from "./atlas-store";
 describe("useAtlasStore", () => {
   beforeEach(() => useAtlasStore.getState().reset());
 
-  it("selects a body and opens its profile on request", () => {
-    useAtlasStore.getState().selectBody("titan");
-    useAtlasStore.getState().setProfileOpen(true);
+  it("opens the profile while selecting a body in one state transition", () => {
+    useAtlasStore.getState().selectAndOpenProfile("titan");
 
     expect(useAtlasStore.getState()).toMatchObject({
       selectedId: "titan",
+      isProfileOpen: true,
+    });
+  });
+
+  it("keeps the profile open and replaces its content on a later selection", () => {
+    useAtlasStore.getState().selectAndOpenProfile("titan");
+    useAtlasStore.getState().selectAndOpenProfile("mars");
+
+    expect(useAtlasStore.getState()).toMatchObject({
+      selectedId: "mars",
       isProfileOpen: true,
     });
   });

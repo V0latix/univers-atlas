@@ -10,6 +10,7 @@ type AtlasState = {
   isPaused: boolean;
   timeMultiplier: TimeMultiplier;
   selectBody: (id: string) => void;
+  selectAndOpenProfile: (id: string) => void;
   setViewMode: (viewMode: ViewMode) => void;
   setProfileOpen: (isOpen: boolean) => void;
   togglePaused: () => void;
@@ -28,6 +29,8 @@ const initial = {
 export const useAtlasStore = create<AtlasState>((set) => ({
   ...initial,
   selectBody: (selectedId) => set({ selectedId }),
+  selectAndOpenProfile: (selectedId) =>
+    set({ selectedId, isProfileOpen: true }),
   setViewMode: (viewMode) => set({ viewMode }),
   setProfileOpen: (isProfileOpen) => set({ isProfileOpen }),
   togglePaused: () => set((state) => ({ isPaused: !state.isPaused })),

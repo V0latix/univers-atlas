@@ -7,6 +7,7 @@ import { SceneCanvas } from "./SceneCanvas";
 
 const canvasState = vi.hoisted(() => ({
   gl: undefined as { alpha?: boolean } | undefined,
+  tabIndex: undefined as number | undefined,
   renderCount: 0,
 }));
 
@@ -14,11 +15,14 @@ vi.mock("@react-three/fiber", () => ({
   Canvas: ({
     children,
     gl,
+    tabIndex,
   }: {
     children: ReactNode;
     gl?: { alpha?: boolean };
+    tabIndex?: number;
   }) => {
     canvasState.gl = gl;
+    canvasState.tabIndex = tabIndex;
     canvasState.renderCount += 1;
 
     return <div data-testid="fiber-canvas">{children}</div>;
@@ -28,6 +32,7 @@ vi.mock("./AtlasScene", () => ({ AtlasScene: () => <div /> }));
 
 beforeEach(() => {
   canvasState.gl = undefined;
+  canvasState.tabIndex = undefined;
   canvasState.renderCount = 0;
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
     {} as WebGL2RenderingContext,
@@ -62,6 +67,7 @@ it("mounts the labelled scene after WebGL2 is available", () => {
   expect(HTMLCanvasElement.prototype.getContext).toHaveBeenCalledWith("webgl2");
   expect(canvasState.renderCount).toBe(1);
   expect(canvasState.gl).toEqual({ alpha: true });
+  expect(canvasState.tabIndex).toBe(0);
   expect(onWebglUnavailable).not.toHaveBeenCalled();
 });
 

@@ -44,7 +44,11 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
       aria-label="Interactive Solar System scene"
       className="scene-canvas"
     >
-      <Canvas gl={{ alpha: true }} camera={{ position: [0, 42, 70], fov: 48 }}>
+      <Canvas
+        gl={{ alpha: true }}
+        camera={{ position: [0, 42, 70], fov: 48 }}
+        tabIndex={0}
+      >
         <AtlasScene />
       </Canvas>
     </section>

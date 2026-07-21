@@ -14,7 +14,9 @@ export function ExplorePanel() {
   const listRef = useRef<HTMLUListElement>(null);
   const selectedItemRef = useRef<HTMLLIElement>(null);
   const selectedId = useAtlasStore((state) => state.selectedId);
-  const selectBody = useAtlasStore((state) => state.selectBody);
+  const selectAndOpenProfile = useAtlasStore(
+    (state) => state.selectAndOpenProfile,
+  );
   const results = searchBodies(query, solarSystem);
   const selectedBody = getBodyById(selectedId);
 
@@ -95,7 +97,7 @@ export function ExplorePanel() {
               <CelestialBodyCard
                 body={body}
                 selected={body.id === selectedId}
-                onSelect={selectBody}
+                onSelect={selectAndOpenProfile}
               />
             </li>
           ))}
