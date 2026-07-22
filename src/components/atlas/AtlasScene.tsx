@@ -31,6 +31,11 @@ const CAMERA_POSITIONS: Record<ViewMode, [number, number, number]> = {
   side: [0, 10, 90],
   "3d": [0, 42, 70],
 };
+export const sceneLighting = {
+  ambient: 0.42,
+  fill: 0.62,
+  sun: 5.8,
+} as const;
 const bodiesById = new Map(solarSystem.map((body) => [body.id, body]));
 export const sceneAnchors: Record<string, OrbitPoint> = {
   pluto: { x: 54, y: 0, z: -24 },
@@ -298,9 +303,18 @@ export function AtlasScene({
   return (
     <>
       <fog attach="fog" args={["#020812", 62, 128]} />
-      <ambientLight intensity={0.24} />
-      <pointLight color="#9ac8ff" intensity={0.38} position={[0, 22, 18]} />
-      <pointLight color="#fbbf24" intensity={4.5} distance={92} position={[0, 0, 0]} />
+      <ambientLight intensity={sceneLighting.ambient} />
+      <pointLight
+        color="#9ac8ff"
+        intensity={sceneLighting.fill}
+        position={[0, 22, 18]}
+      />
+      <pointLight
+        color="#fbbf24"
+        intensity={sceneLighting.sun}
+        distance={92}
+        position={[0, 0, 0]}
+      />
 
       <CameraPreset
         controlsRef={controlsRef}

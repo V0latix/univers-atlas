@@ -12,6 +12,7 @@ import {
   getFocusTarget,
   getNextSimulationDays,
   getSceneBodyPosition,
+  sceneLighting,
   sceneAnchors,
 } from "./AtlasScene";
 import { easeOutCubic } from "./camera-focus";
@@ -60,6 +61,12 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks();
+});
+
+it("uses brighter balanced illumination for the scene", () => {
+  expect(sceneLighting.ambient).toBeGreaterThan(0.24);
+  expect(sceneLighting.fill).toBeGreaterThan(0.38);
+  expect(sceneLighting.sun).toBeGreaterThan(4.5);
 });
 
 it("positions Charon relative to the scene-only Pluto anchor", () => {

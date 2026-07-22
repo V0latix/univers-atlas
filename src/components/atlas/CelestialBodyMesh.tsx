@@ -21,10 +21,10 @@ type CelestialBodyMeshProps = {
   simulationDaysRef: MutableRefObject<number>;
 };
 
-const surfaceMaterials = {
-  star: { roughness: 0.4, metalness: 0.04, emissiveIntensity: 1.6 },
-  planet: { roughness: 0.62, metalness: 0.06, emissiveIntensity: 0.05 },
-  moon: { roughness: 0.9, metalness: 0, emissiveIntensity: 0.015 },
+export const surfaceMaterials = {
+  star: { roughness: 0.4, metalness: 0.04, emissiveIntensity: 1.85 },
+  planet: { roughness: 0.62, metalness: 0.06, emissiveIntensity: 0.13 },
+  moon: { roughness: 0.9, metalness: 0, emissiveIntensity: 0.06 },
 } as const;
 
 const RING_ROTATION: [number, number, number] = [-Math.PI / 2.6, 0, 0];

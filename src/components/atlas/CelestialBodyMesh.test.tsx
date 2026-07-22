@@ -3,7 +3,7 @@ import { expect, it, vi } from "vitest";
 
 import { getBodyById } from "@/data/solar-system";
 
-import { CelestialBodyMesh } from "./CelestialBodyMesh";
+import { CelestialBodyMesh, surfaceMaterials } from "./CelestialBodyMesh";
 
 vi.mock("@react-three/fiber", () => ({ useFrame: () => undefined }));
 const presentationState = vi.hoisted(() => ({
@@ -34,6 +34,14 @@ vi.mock("./celestial-presentation", async (importOriginal) => {
 
 const getBodyPosition = () => ({ x: 0, y: 0, z: 0 });
 const simulationDaysRef = { current: 0 };
+
+it("gives planets and moons a visible but restrained emission lift", () => {
+  expect(surfaceMaterials.planet.emissiveIntensity).toBeGreaterThan(0.05);
+  expect(surfaceMaterials.moon.emissiveIntensity).toBeGreaterThan(0.015);
+  expect(surfaceMaterials.star.emissiveIntensity).toBeGreaterThan(
+    surfaceMaterials.planet.emissiveIntensity,
+  );
+});
 
 it("layers Saturn's rings behind and in front of the globe", () => {
   presentationState.ringStyle = "actual";
