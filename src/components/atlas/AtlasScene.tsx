@@ -174,6 +174,7 @@ function SelectedBodyFocus({
   prefersReducedMotion: boolean;
 }) {
   const transitionRef = useRef<CameraFocusTransition | null>(null);
+  const trackingOffsetRef = useRef<VectorTuple | null>(null);
   const initializedCancellationRef = useRef<{
     focusRevision: number;
     viewRevision: number;
@@ -192,12 +193,18 @@ function SelectedBodyFocus({
       bodyRadius: selectedBody.radius,
       startedAt: Date.now(),
     });
+    const focusOffset = transition.endPosition.map(
+      (coordinate, index) => coordinate - transition.target[index],
+    ) as VectorTuple;
+
+    trackingOffsetRef.current = null;
 
     if (prefersReducedMotion) {
       controls.object.position.set(...transition.endPosition);
       controls.target.set(...transition.target);
       controls.update();
       transitionRef.current = null;
+      trackingOffsetRef.current = focusOffset;
       return;
     }
 
@@ -211,14 +218,32 @@ function SelectedBodyFocus({
     }
 
     transitionRef.current = null;
+    trackingOffsetRef.current = null;
     initializedCancellationRef.current = { focusRevision, viewRevision };
   }, [focusRevision, viewRevision]);
 
   useFrame(() => {
-    const transition = transitionRef.current;
     const controls = controlsRef.current;
     const selectedBody = bodiesById.get(selectedId);
-    if (!transition || !controls || !selectedBody) return;
+    if (!controls || !selectedBody) return;
+
+    const transition = transitionRef.current;
+    if (!transition) {
+      const trackingOffset = trackingOffsetRef.current;
+      if (!trackingOffset) return;
+
+      const liveTarget = getVectorTuple(
+        getFocusTarget(selectedBody, simulationDaysRef.current),
+      );
+      controls.object.position.set(
+        liveTarget[0] + trackingOffset[0],
+        liveTarget[1] + trackingOffset[1],
+        liveTarget[2] + trackingOffset[2],
+      );
+      controls.target.set(...liveTarget);
+      controls.update();
+      return;
+    }
 
     const progress = easeOutCubic(
       (Date.now() - transition.startedAt) / transition.durationMs,
@@ -248,6 +273,7 @@ function SelectedBodyFocus({
 
     if (progress === 1) {
       transitionRef.current = null;
+      trackingOffsetRef.current = focusOffset;
     }
   });
 

@@ -128,6 +128,33 @@ it("interpolates toward the selected body's live simulated position", () => {
   expect(controls.update).toHaveBeenCalled();
 });
 
+it("keeps the camera centered on an astre after its focus transition", () => {
+  const earth = solarSystem.find((body) => body.id === "earth")!;
+  const { controls, controlsRef } = createControls();
+  useAtlasStore.getState().setTimeMultiplier(365);
+
+  render(createElement(AtlasScene, { controlsRef, focusRevision: 0 }));
+  vi.mocked(Date.now).mockReturnValue(1_450);
+  act(() => runLatestFrame(0.5));
+  const cameraOffset = controls.object.position.clone().sub(controls.target);
+
+  vi.mocked(Date.now).mockReturnValue(1_550);
+  act(() => runLatestFrame(0.5));
+
+  const livePosition = getSceneBodyPosition(earth, 365);
+  expect(controls.target.toArray()).toEqual([
+    livePosition.x,
+    livePosition.y,
+    livePosition.z,
+  ]);
+  const currentCameraOffset = controls.object.position
+    .clone()
+    .sub(controls.target);
+  expect(currentCameraOffset.x).toBeCloseTo(cameraOffset.x);
+  expect(currentCameraOffset.y).toBeCloseTo(cameraOffset.y);
+  expect(currentCameraOffset.z).toBeCloseTo(cameraOffset.z);
+});
+
 it("stops an in-flight focus transition after manual controls start", () => {
   const { controls, controlsRef } = createControls();
   const { rerender } = render(
