@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import type { TimeMultiplier } from "@/domain/orbits";
 import type { ViewMode } from "@/domain/types";
+import type { AtlasLocale } from "@/i18n/atlas-copy";
 
 type AtlasState = {
   selectedId: string;
@@ -10,12 +11,14 @@ type AtlasState = {
   isProfileOpen: boolean;
   isPaused: boolean;
   timeMultiplier: TimeMultiplier;
+  locale: AtlasLocale;
   selectBody: (id: string) => void;
   selectAndOpenProfile: (id: string) => void;
   setViewMode: (viewMode: ViewMode) => void;
   setProfileOpen: (isOpen: boolean) => void;
   togglePaused: () => void;
   setTimeMultiplier: (multiplier: TimeMultiplier) => void;
+  setLocale: (locale: AtlasLocale) => void;
   reset: () => void;
 };
 
@@ -26,6 +29,7 @@ const initial = {
   isProfileOpen: false,
   isPaused: false,
   timeMultiplier: 30 as TimeMultiplier,
+  locale: "fr" as AtlasLocale,
 };
 
 export const useAtlasStore = create<AtlasState>((set) => ({
@@ -38,5 +42,6 @@ export const useAtlasStore = create<AtlasState>((set) => ({
   setProfileOpen: (isProfileOpen) => set({ isProfileOpen }),
   togglePaused: () => set((state) => ({ isPaused: !state.isPaused })),
   setTimeMultiplier: (timeMultiplier) => set({ timeMultiplier }),
+  setLocale: (locale) => set({ locale }),
   reset: () => set(initial),
 }));

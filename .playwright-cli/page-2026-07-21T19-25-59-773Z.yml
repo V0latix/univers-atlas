@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e12]:
+        - text: Interactive planetary guide
+        - heading "Univers Atlas" [level=1] [ref=e13]
+      - generic [ref=e16]:
+        - strong [ref=e17]: Live simulation
+        - text: 22 tracked bodies
+    - region "View controls" [ref=e20]:
+      - generic [ref=e21]:
+        - button "3D view" [pressed] [ref=e22] [cursor=pointer]:
+          - generic [ref=e26]: 3D
+        - button "Top view" [ref=e27] [cursor=pointer]:
+          - generic [ref=e31]: Top
+        - button "Side view" [ref=e32] [cursor=pointer]:
+          - generic [ref=e35]: Side
+      - button "Pause simulation" [ref=e36] [cursor=pointer]
+      - generic [ref=e40]: Simulation speed
+      - combobox "Simulation speed" [ref=e41] [cursor=pointer]:
+        - option "1 days per second"
+        - option "10 days per second"
+        - option "30 days per second" [selected]
+        - option "90 days per second"
+        - option "365 days per second"
+    - complementary "Explore the Solar System" [ref=e42]:
+      - paragraph [ref=e43]: Celestial index
+      - heading "Explore worlds" [level=2] [ref=e44]
+      - generic [ref=e45]: Search celestial bodies
+      - searchbox "Search celestial bodies" [ref=e50]
+      - paragraph [ref=e51]: Earth selected
+      - list [ref=e52]:
+        - listitem [ref=e53]:
+          - button "Sun" [ref=e54] [cursor=pointer]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: Star
+              - strong [ref=e59]: Sun
+              - generic [ref=e60]: Solar System star
+        - listitem [ref=e64]:
+          - button "Mercury" [ref=e65] [cursor=pointer]:
+            - generic [ref=e68]:
+              - generic [ref=e69]: Planet
+              - strong [ref=e70]: Mercury
+              - generic [ref=e71]: 88 day orbit
+        - listitem [ref=e75]:
+          - button "Venus" [ref=e76] [cursor=pointer]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: Planet
+              - strong [ref=e81]: Venus
+              - generic [ref=e82]: 224.7 day orbit
+        - listitem [ref=e86]:
+          - button "Earth" [pressed] [ref=e87] [cursor=pointer]:
+            - generic [ref=e90]:
+              - generic [ref=e91]: Planet
+              - strong [ref=e92]: Earth
+              - generic [ref=e93]: 365.25 day orbit
+        - listitem [ref=e97]:
+          - button "Mars" [ref=e98] [cursor=pointer]:
+            - generic [ref=e101]:
+              - generic [ref=e102]: Planet
+              - strong [ref=e103]: Mars
+              - generic [ref=e104]: 687 day orbit
+        - listitem [ref=e108]:
+          - button "Jupiter" [ref=e109] [cursor=pointer]:
+            - generic [ref=e112]:
+              - generic [ref=e113]: Planet
+              - strong [ref=e114]: Jupiter
+              - generic [ref=e115]: 4,332.6 day orbit
+        - listitem [ref=e119]:
+          - button "Saturn" [ref=e120] [cursor=pointer]:
+            - generic "Saturn rings" [ref=e123]
+            - generic [ref=e124]:
+              - generic [ref=e125]: Planet
+              - strong [ref=e126]: Saturn
+              - generic [ref=e127]: 10,759.2 day orbit
+        - listitem [ref=e131]:
+          - button "Uranus" [ref=e132] [cursor=pointer]:
+            - generic [ref=e135]:
+              - generic [ref=e136]: Planet
+              - strong [ref=e137]: Uranus
+              - generic [ref=e138]: 30,688.5 day orbit
+        - listitem [ref=e142]:
+          - button "Neptune" [ref=e143] [cursor=pointer]:
+            - generic [ref=e146]:
+              - generic [ref=e147]: Planet
+              - strong [ref=e148]: Neptune
+              - generic [ref=e149]: 60,182 day orbit
+        - listitem [ref=e153]:
+          - button "Moon" [ref=e154] [cursor=pointer]:
+            - generic [ref=e157]:
+              - generic [ref=e158]: Moon
+              - strong [ref=e159]: Moon
+              - generic [ref=e160]: 27.3 day orbit
+        - listitem [ref=e164]:
+          - button "Phobos" [ref=e165] [cursor=pointer]:
+            - generic [ref=e168]:
+              - generic [ref=e169]: Moon
+              - strong [ref=e170]: Phobos
+              - generic [ref=e171]: 0.319 day orbit
+        - listitem [ref=e175]:
+          - button "Deimos" [ref=e176] [cursor=pointer]:
+            - generic [ref=e179]:
+              - generic [ref=e180]: Moon
+              - strong [ref=e181]: Deimos
+              - generic [ref=e182]: 1.263 day orbit
+        - listitem [ref=e186]:
+          - button "Io" [ref=e187] [cursor=pointer]:
+            - generic [ref=e190]:
+              - generic [ref=e191]: Moon
+              - strong [ref=e192]: Io
+              - generic [ref=e193]: 1.769 day orbit
+        - listitem [ref=e197]:
+          - button "Europa" [ref=e198] [cursor=pointer]:
+            - generic [ref=e201]:
+              - generic [ref=e202]: Moon
+              - strong [ref=e203]: Europa
+              - generic [ref=e204]: 3.551 day orbit
+        - listitem [ref=e208]:
+          - button "Ganymede" [ref=e209] [cursor=pointer]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: Moon
+              - strong [ref=e214]: Ganymede
+              - generic [ref=e215]: 7.155 day orbit
+        - listitem [ref=e219]:
+          - button "Callisto" [ref=e220] [cursor=pointer]:
+            - generic [ref=e223]:
+              - generic [ref=e224]: Moon
+              - strong [ref=e225]: Callisto
+              - generic [ref=e226]: 16.689 day orbit
+        - listitem [ref=e230]:
+          - button "Mimas" [ref=e231] [cursor=pointer]:
+            - generic [ref=e234]:
+              - generic [ref=e235]: Moon
+              - strong [ref=e236]: Mimas
+              - generic [ref=e237]: 0.942 day orbit
+        - listitem [ref=e241]:
+          - button "Enceladus" [ref=e242] [cursor=pointer]:
+            - generic [ref=e245]:
+              - generic [ref=e246]: Moon
+              - strong [ref=e247]: Enceladus
+              - generic [ref=e248]: 1.37 day orbit
+        - listitem [ref=e252]:
+          - button "Titan" [ref=e253] [cursor=pointer]:
+            - generic [ref=e256]:
+              - generic [ref=e257]: Moon
+              - strong [ref=e258]: Titan
+              - generic [ref=e259]: 15.945 day orbit
+        - listitem [ref=e263]:
+          - button "Iapetus" [ref=e264] [cursor=pointer]:
+            - generic [ref=e267]:
+              - generic [ref=e268]: Moon
+              - strong [ref=e269]: Iapetus
+              - generic [ref=e270]: 79.322 day orbit
+        - listitem [ref=e274]:
+          - button "Triton" [ref=e275] [cursor=pointer]:
+            - generic [ref=e278]:
+              - generic [ref=e279]: Moon
+              - strong [ref=e280]: Triton
+              - generic [ref=e281]: 5.877 day orbit
+        - listitem [ref=e285]:
+          - button "Charon" [ref=e286] [cursor=pointer]:
+            - generic [ref=e289]:
+              - generic [ref=e290]: Moon
+              - strong [ref=e291]: Charon
+              - generic [ref=e292]: 6.387 day orbit
+  - button "Open Next.js Dev Tools" [ref=e301] [cursor=pointer]

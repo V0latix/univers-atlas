@@ -7,7 +7,10 @@ import { useAtlasStore } from "@/store/atlas-store";
 import { ExplorePanel } from "./ExplorePanel";
 
 describe("ExplorePanel", () => {
-  beforeEach(() => useAtlasStore.getState().reset());
+  beforeEach(() => {
+    useAtlasStore.getState().reset();
+    useAtlasStore.getState().setLocale("en");
+  });
 
   it("searches and selects Titan", async () => {
     const user = userEvent.setup();
@@ -68,5 +71,21 @@ describe("ExplorePanel", () => {
       "aria-pressed",
       "true",
     );
+  });
+
+  it("opens and closes the mobile explorer drawer", async () => {
+    const user = userEvent.setup();
+    render(<ExplorePanel />);
+
+    const trigger = screen.getByRole("button", {
+      name: "Explore celestial bodiesEarth",
+    });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 });

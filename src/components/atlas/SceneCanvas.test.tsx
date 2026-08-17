@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { MOUSE } from "three";
 import { afterEach, beforeEach, vi } from "vitest";
 
+import { useAtlasStore } from "@/store/atlas-store";
+
 import { SceneCanvas } from "./SceneCanvas";
 
 const canvasState = vi.hoisted(() => ({
@@ -41,6 +43,8 @@ vi.mock("@react-three/drei", () => ({
 vi.mock("./AtlasScene", () => ({ AtlasScene: () => <div /> }));
 
 beforeEach(() => {
+  useAtlasStore.getState().reset();
+  useAtlasStore.getState().setLocale("en");
   canvasState.gl = undefined;
   canvasState.tabIndex = undefined;
   canvasState.renderCount = 0;

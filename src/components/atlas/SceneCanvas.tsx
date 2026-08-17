@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { MOUSE } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
+import { getAtlasCopy } from "@/i18n/atlas-copy";
+import { useAtlasStore } from "@/store/atlas-store";
+
 import { AtlasScene } from "./AtlasScene";
 
 type SceneCanvasProps = {
@@ -28,6 +31,8 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
   const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
   const [focusRevision, setFocusRevision] = useState(0);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const locale = useAtlasStore((state) => state.locale);
+  const copy = getAtlasCopy(locale);
 
   useEffect(() => {
     const available = canUseWebGL2();
@@ -46,7 +51,7 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
 
   return (
     <section
-      aria-label="Interactive Solar System scene"
+      aria-label={copy.sceneAriaLabel}
       className="scene-canvas"
     >
       <Canvas

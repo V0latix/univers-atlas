@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Univers Atlas",
   description:
-    "Explore the Solar System in an interactive atlas of planets, moons, and orbital motion.",
+    "Explorez le Système solaire dans un atlas interactif de planètes, lunes et mouvements orbitaux.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

@@ -1,9 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
 import { getBodyById } from "@/data/solar-system";
+import { useAtlasStore } from "@/store/atlas-store";
 import { CelestialBodyCard } from "./CelestialBodyCard";
+
+beforeEach(() => {
+  useAtlasStore.getState().reset();
+  useAtlasStore.getState().setLocale("en");
+});
 
 it("renders and activates a recognizable selected body card", async () => {
   const titan = getBodyById("titan")!;
@@ -16,7 +22,7 @@ it("renders and activates a recognizable selected body card", async () => {
   expect(card).toHaveAttribute("aria-pressed", "true");
   expect(card).toHaveStyle(`--body-color: ${titan.color}`);
   expect(screen.getByText("Moon")).toBeInTheDocument();
-  expect(screen.getByText("15.945 day orbit")).toBeInTheDocument();
+  expect(screen.getByText("15.945-day orbit")).toBeInTheDocument();
 
   await user.click(card);
   expect(onSelect).toHaveBeenCalledWith("titan");

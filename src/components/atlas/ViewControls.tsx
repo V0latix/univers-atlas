@@ -11,17 +11,17 @@ import {
 
 import type { TimeMultiplier } from "@/domain/orbits";
 import type { ViewMode } from "@/domain/types";
+import { getAtlasCopy } from "@/i18n/atlas-copy";
 import { useAtlasStore } from "@/store/atlas-store";
 
 const views: ReadonlyArray<{
   icon: LucideIcon;
-  label: string;
   shortLabel: string;
   value: ViewMode;
 }> = [
-  { icon: Box, label: "3D view", shortLabel: "3D", value: "3d" },
-  { icon: CircleDot, label: "Top view", shortLabel: "Top", value: "top" },
-  { icon: PanelTop, label: "Side view", shortLabel: "Side", value: "side" },
+  { icon: Box, shortLabel: "3D", value: "3d" },
+  { icon: CircleDot, shortLabel: "Top", value: "top" },
+  { icon: PanelTop, shortLabel: "Side", value: "side" },
 ];
 
 const speeds: TimeMultiplier[] = [1, 10, 30, 90, 365];
@@ -33,9 +33,12 @@ export function ViewControls() {
   const setViewMode = useAtlasStore((state) => state.setViewMode);
   const togglePaused = useAtlasStore((state) => state.togglePaused);
   const setTimeMultiplier = useAtlasStore((state) => state.setTimeMultiplier);
+  const locale = useAtlasStore((state) => state.locale);
+  const copy = getAtlasCopy(locale);
+  const pauseAction = isPaused ? copy.resumeSimulation : copy.pauseSimulation;
 
   return (
-    <section aria-label="View controls" className="view-controls">
+    <section aria-label={copy.viewControls} className="view-controls">
       <div className="view-controls__group">
         {views.map((view) => {
           const Icon = view.icon;
@@ -44,7 +47,7 @@ export function ViewControls() {
             <button
               key={view.value}
               type="button"
-              aria-label={view.label}
+              aria-label={copy.viewNames[view.value]}
               aria-pressed={viewMode === view.value}
               onClick={() => setViewMode(view.value)}
             >
@@ -58,7 +61,7 @@ export function ViewControls() {
       </div>
       <button
         type="button"
-        aria-label="Pause simulation"
+        aria-label={pauseAction}
         aria-pressed={isPaused}
         onClick={togglePaused}
       >
@@ -67,9 +70,9 @@ export function ViewControls() {
         ) : (
           <Pause aria-hidden="true" />
         )}
-        Pause simulation
+        {pauseAction}
       </button>
-      <label htmlFor="simulation-speed">Simulation speed</label>
+      <label htmlFor="simulation-speed">{copy.simulationSpeed}</label>
       <select
         id="simulation-speed"
         value={timeMultiplier}
@@ -79,7 +82,7 @@ export function ViewControls() {
       >
         {speeds.map((speed) => (
           <option key={speed} value={speed}>
-            {speed} days per second
+            {copy.daysPerSecond(speed)}
           </option>
         ))}
       </select>

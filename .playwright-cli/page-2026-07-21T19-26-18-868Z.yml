@@ -1,0 +1,232 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e12]:
+        - text: Interactive planetary guide
+        - heading "Univers Atlas" [level=1] [ref=e13]
+      - generic [ref=e16]:
+        - strong [ref=e17]: Live simulation
+        - text: 22 tracked bodies
+    - generic [ref=e18]:
+      - region "Interactive Solar System scene" [ref=e305]
+      - region "View controls" [ref=e20]:
+        - generic [ref=e21]:
+          - button "3D view" [pressed] [ref=e22] [cursor=pointer]:
+            - generic [ref=e26]: 3D
+          - button "Top view" [ref=e27] [cursor=pointer]:
+            - generic [ref=e31]: Top
+          - button "Side view" [ref=e32] [cursor=pointer]:
+            - generic [ref=e35]: Side
+        - button "Pause simulation" [ref=e36] [cursor=pointer]
+        - generic [ref=e40]: Simulation speed
+        - combobox "Simulation speed" [ref=e41] [cursor=pointer]:
+          - option "1 days per second"
+          - option "10 days per second"
+          - option "30 days per second" [selected]
+          - option "90 days per second"
+          - option "365 days per second"
+    - complementary "Explore the Solar System" [ref=e42]:
+      - paragraph [ref=e43]: Celestial index
+      - heading "Explore worlds" [level=2] [ref=e44]
+      - generic [ref=e45]: Search celestial bodies
+      - searchbox "Search celestial bodies" [ref=e50]
+      - paragraph [ref=e51]: Mars selected
+      - list [ref=e52]:
+        - listitem [ref=e53]:
+          - button "Sun" [ref=e54] [cursor=pointer]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: Star
+              - strong [ref=e59]: Sun
+              - generic [ref=e60]: Solar System star
+        - listitem [ref=e64]:
+          - button "Mercury" [ref=e65] [cursor=pointer]:
+            - generic [ref=e68]:
+              - generic [ref=e69]: Planet
+              - strong [ref=e70]: Mercury
+              - generic [ref=e71]: 88 day orbit
+        - listitem [ref=e75]:
+          - button "Venus" [ref=e76] [cursor=pointer]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: Planet
+              - strong [ref=e81]: Venus
+              - generic [ref=e82]: 224.7 day orbit
+        - listitem [ref=e86]:
+          - button "Earth" [ref=e87] [cursor=pointer]:
+            - generic [ref=e90]:
+              - generic [ref=e91]: Planet
+              - strong [ref=e92]: Earth
+              - generic [ref=e93]: 365.25 day orbit
+        - listitem [ref=e97]:
+          - button "Mars" [pressed] [ref=e98] [cursor=pointer]:
+            - generic [ref=e101]:
+              - generic [ref=e102]: Planet
+              - strong [ref=e103]: Mars
+              - generic [ref=e104]: 687 day orbit
+        - listitem [ref=e108]:
+          - button "Jupiter" [ref=e109] [cursor=pointer]:
+            - generic [ref=e112]:
+              - generic [ref=e113]: Planet
+              - strong [ref=e114]: Jupiter
+              - generic [ref=e115]: 4,332.6 day orbit
+        - listitem [ref=e119]:
+          - button "Saturn" [ref=e120] [cursor=pointer]:
+            - generic "Saturn rings" [ref=e123]
+            - generic [ref=e124]:
+              - generic [ref=e125]: Planet
+              - strong [ref=e126]: Saturn
+              - generic [ref=e127]: 10,759.2 day orbit
+        - listitem [ref=e131]:
+          - button "Uranus" [ref=e132] [cursor=pointer]:
+            - generic [ref=e135]:
+              - generic [ref=e136]: Planet
+              - strong [ref=e137]: Uranus
+              - generic [ref=e138]: 30,688.5 day orbit
+        - listitem [ref=e142]:
+          - button "Neptune" [ref=e143] [cursor=pointer]:
+            - generic [ref=e146]:
+              - generic [ref=e147]: Planet
+              - strong [ref=e148]: Neptune
+              - generic [ref=e149]: 60,182 day orbit
+        - listitem [ref=e153]:
+          - button "Moon" [ref=e154] [cursor=pointer]:
+            - generic [ref=e157]:
+              - generic [ref=e158]: Moon
+              - strong [ref=e159]: Moon
+              - generic [ref=e160]: 27.3 day orbit
+        - listitem [ref=e164]:
+          - button "Phobos" [ref=e165] [cursor=pointer]:
+            - generic [ref=e168]:
+              - generic [ref=e169]: Moon
+              - strong [ref=e170]: Phobos
+              - generic [ref=e171]: 0.319 day orbit
+        - listitem [ref=e175]:
+          - button "Deimos" [ref=e176] [cursor=pointer]:
+            - generic [ref=e179]:
+              - generic [ref=e180]: Moon
+              - strong [ref=e181]: Deimos
+              - generic [ref=e182]: 1.263 day orbit
+        - listitem [ref=e186]:
+          - button "Io" [ref=e187] [cursor=pointer]:
+            - generic [ref=e190]:
+              - generic [ref=e191]: Moon
+              - strong [ref=e192]: Io
+              - generic [ref=e193]: 1.769 day orbit
+        - listitem [ref=e197]:
+          - button "Europa" [ref=e198] [cursor=pointer]:
+            - generic [ref=e201]:
+              - generic [ref=e202]: Moon
+              - strong [ref=e203]: Europa
+              - generic [ref=e204]: 3.551 day orbit
+        - listitem [ref=e208]:
+          - button "Ganymede" [ref=e209] [cursor=pointer]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: Moon
+              - strong [ref=e214]: Ganymede
+              - generic [ref=e215]: 7.155 day orbit
+        - listitem [ref=e219]:
+          - button "Callisto" [ref=e220] [cursor=pointer]:
+            - generic [ref=e223]:
+              - generic [ref=e224]: Moon
+              - strong [ref=e225]: Callisto
+              - generic [ref=e226]: 16.689 day orbit
+        - listitem [ref=e230]:
+          - button "Mimas" [ref=e231] [cursor=pointer]:
+            - generic [ref=e234]:
+              - generic [ref=e235]: Moon
+              - strong [ref=e236]: Mimas
+              - generic [ref=e237]: 0.942 day orbit
+        - listitem [ref=e241]:
+          - button "Enceladus" [ref=e242] [cursor=pointer]:
+            - generic [ref=e245]:
+              - generic [ref=e246]: Moon
+              - strong [ref=e247]: Enceladus
+              - generic [ref=e248]: 1.37 day orbit
+        - listitem [ref=e252]:
+          - button "Titan" [ref=e253] [cursor=pointer]:
+            - generic [ref=e256]:
+              - generic [ref=e257]: Moon
+              - strong [ref=e258]: Titan
+              - generic [ref=e259]: 15.945 day orbit
+        - listitem [ref=e263]:
+          - button "Iapetus" [ref=e264] [cursor=pointer]:
+            - generic [ref=e267]:
+              - generic [ref=e268]: Moon
+              - strong [ref=e269]: Iapetus
+              - generic [ref=e270]: 79.322 day orbit
+        - listitem [ref=e274]:
+          - button "Triton" [ref=e275] [cursor=pointer]:
+            - generic [ref=e278]:
+              - generic [ref=e279]: Moon
+              - strong [ref=e280]: Triton
+              - generic [ref=e281]: 5.877 day orbit
+        - listitem [ref=e285]:
+          - button "Charon" [ref=e286] [cursor=pointer]:
+            - generic [ref=e289]:
+              - generic [ref=e290]: Moon
+              - strong [ref=e291]: Charon
+              - generic [ref=e292]: 6.387 day orbit
+    - dialog [ref=e374]:
+      - generic [ref=e375]:
+        - heading "Mars profile" [level=2] [ref=e376]
+        - button "Close profile" [active] [ref=e377] [cursor=pointer]
+      - paragraph [ref=e381]: Mars is a cold desert planet with ancient river valleys, polar ice caps, and the largest volcano in the Solar System.
+      - generic [ref=e382]:
+        - generic [ref=e383]:
+          - term [ref=e384]: Classification
+          - definition [ref=e385]: Planet
+        - generic [ref=e386]:
+          - term [ref=e387]: Parent body
+          - definition [ref=e388]: None
+        - generic [ref=e389]:
+          - term [ref=e390]: Atmosphere
+          - definition [ref=e391]: Thin carbon dioxide atmosphere with nitrogen and argon
+        - generic [ref=e392]:
+          - term [ref=e393]: Composition
+          - definition [ref=e394]: Rocky planet with an iron, nickel, and sulfur core
+        - generic [ref=e395]:
+          - term [ref=e396]: Mean surface temperature
+          - definition [ref=e397]: "-65 °C"
+        - generic [ref=e398]:
+          - term [ref=e399]: Rotation
+          - definition [ref=e400]: 24.6 hours
+        - generic [ref=e401]:
+          - term [ref=e402]: Radius
+          - definition [ref=e403]: 3,396 km
+        - generic [ref=e404]:
+          - term [ref=e405]: Orbital period
+          - definition [ref=e406]: 687 days (1.88 Earth years)
+        - generic [ref=e407]:
+          - term [ref=e408]: Diameter
+          - definition [ref=e409]: 6,792 km
+        - generic [ref=e410]:
+          - term [ref=e411]: Surface gravity
+          - definition [ref=e412]: 3.71 m/s²
+        - generic [ref=e413]:
+          - term [ref=e414]: Orbital velocity
+          - definition [ref=e415]: 24.1 km/s
+        - generic [ref=e416]:
+          - term [ref=e417]: Distance from the Sun
+          - definition [ref=e418]: 227,943,824 km (1.52 AU)
+        - generic [ref=e419]:
+          - term [ref=e420]: System role
+          - definition [ref=e421]: Primary planet
+        - generic [ref=e422]:
+          - term [ref=e423]: Catalogue coverage
+          - definition [ref=e424]: 2 notable facts · 3 missions
+      - region [ref=e425]:
+        - heading "Notable facts" [level=3] [ref=e426]
+        - list [ref=e427]:
+          - listitem [ref=e428]: Olympus Mons is the largest known volcano in the Solar System.
+          - listitem [ref=e429]: Its two small moons are Phobos and Deimos.
+      - region [ref=e430]:
+        - heading "Missions" [level=3] [ref=e431]
+        - list [ref=e432]:
+          - listitem [ref=e433]: Viking
+          - listitem [ref=e434]: Mars Reconnaissance Orbiter
+          - listitem [ref=e435]: Perseverance
+      - paragraph [ref=e436]:
+        - text: "Source:"
+        - link "NASA Science — Mars" [ref=e437] [cursor=pointer]:
+          - /url: https://science.nasa.gov/mars/
+  - button "Open Next.js Dev Tools" [ref=e301] [cursor=pointer]
+  - alert [ref=e309]

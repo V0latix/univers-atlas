@@ -7,7 +7,10 @@ import { useAtlasStore } from "@/store/atlas-store";
 import { ViewControls } from "./ViewControls";
 
 describe("ViewControls", () => {
-  beforeEach(() => useAtlasStore.getState().reset());
+  beforeEach(() => {
+    useAtlasStore.getState().reset();
+    useAtlasStore.getState().setLocale("en");
+  });
 
   it("changes the active view and exposes it with aria-pressed", async () => {
     const user = userEvent.setup();

@@ -17,7 +17,10 @@ const expectProfileField = (label: string, value: string) => {
 };
 
 describe("FocusCard and ProfilePanel", () => {
-  beforeEach(() => useAtlasStore.getState().reset());
+  beforeEach(() => {
+    useAtlasStore.getState().reset();
+    useAtlasStore.getState().setLocale("en");
+  });
   afterEach(() => vi.restoreAllMocks());
 
   it("shows key facts in the compact selected-body summary", () => {

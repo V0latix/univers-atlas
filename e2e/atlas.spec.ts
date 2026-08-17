@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("univers-atlas-locale", "en");
+  });
+});
+
 const overlapArea = (
   first: { x: number; y: number; width: number; height: number },
   second: { x: number; y: number; width: number; height: number },

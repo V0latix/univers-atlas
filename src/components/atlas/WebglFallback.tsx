@@ -1,11 +1,16 @@
+"use client";
+
+import { getAtlasCopy } from "@/i18n/atlas-copy";
+import { useAtlasStore } from "@/store/atlas-store";
+
 export function WebglFallback() {
+  const locale = useAtlasStore((state) => state.locale);
+  const copy = getAtlasCopy(locale);
+
   return (
-    <section className="webgl-fallback" aria-label="3D view unavailable">
-      <p>3D view is unavailable in this browser.</p>
-      <p>
-        You can still search the atlas and explore every celestial body&apos;s
-        profile.
-      </p>
+    <section className="webgl-fallback" aria-label={copy.webglUnavailable}>
+      <p>{copy.webglUnavailable}</p>
+      <p>{copy.webglFallback}</p>
     </section>
   );
 }
