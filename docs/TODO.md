@@ -14,7 +14,7 @@ initial English Solar System release.
 ### P1 — Exploration clarity
 
 - [x] Add scene labels, a conspicuous highlight for the selected body, and a compact help hint explaining orbit, zoom, and camera controls.
-- [ ] Add a camera reset action and filters for planets, moons, and orbital paths.
+- [x] Add a camera reset action and filters for planets, moons, and orbital paths.
 - [ ] Restructure long profiles around an “Essential” summary, then expandable or tabbed sections for physical data and missions.
 - [ ] Keep the pause control’s visible and accessible label in sync with its action: “Pause” when running, “Resume” when paused.
 

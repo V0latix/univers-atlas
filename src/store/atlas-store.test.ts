@@ -39,6 +39,30 @@ describe("useAtlasStore", () => {
     expect(useAtlasStore.getState().viewRevision).toBe(initialRevision + 2);
   });
 
+  it("reapplies the active camera preset without changing its mode", () => {
+    useAtlasStore.getState().setViewMode("side");
+    const revision = useAtlasStore.getState().viewRevision;
+
+    useAtlasStore.getState().resetCamera();
+
+    expect(useAtlasStore.getState()).toMatchObject({
+      viewMode: "side",
+      viewRevision: revision + 1,
+    });
+  });
+
+  it("tracks independent scene visibility filters", () => {
+    useAtlasStore.getState().setPlanetsVisible(false);
+    useAtlasStore.getState().setMoonsVisible(false);
+    useAtlasStore.getState().setOrbitPathsVisible(false);
+
+    expect(useAtlasStore.getState()).toMatchObject({
+      showPlanets: false,
+      showMoons: false,
+      showOrbitPaths: false,
+    });
+  });
+
   it("toggles the paused state", () => {
     useAtlasStore.getState().togglePaused();
 
@@ -64,7 +88,10 @@ describe("useAtlasStore", () => {
       viewMode: "3d",
       isProfileOpen: false,
       isPaused: false,
-      timeMultiplier: 30,
+    timeMultiplier: 30,
+    showPlanets: true,
+    showMoons: true,
+    showOrbitPaths: true,
     });
   });
 });

@@ -63,6 +63,28 @@ describe("ViewControls", () => {
     expect(pauseButton).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("resets the camera and toggles the independent scene filters", async () => {
+    const user = userEvent.setup();
+    render(<ViewControls />);
+    const revision = useAtlasStore.getState().viewRevision;
+
+    await user.click(screen.getByRole("button", { name: "Reset camera" }));
+    await user.click(screen.getByRole("button", { name: "Planet" }));
+    await user.click(screen.getByRole("button", { name: "Moon" }));
+    await user.click(screen.getByRole("button", { name: "Orbits" }));
+
+    expect(useAtlasStore.getState()).toMatchObject({
+      viewRevision: revision + 1,
+      showPlanets: false,
+      showMoons: false,
+      showOrbitPaths: false,
+    });
+    expect(screen.getByRole("button", { name: "Planet" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+  });
+
   it("sets the labelled simulation speed", async () => {
     const user = userEvent.setup();
     render(<ViewControls />);

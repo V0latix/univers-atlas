@@ -3,9 +3,13 @@
 import {
   Box,
   CircleDot,
+  Globe2,
+  Moon,
+  Orbit,
   PanelTop,
   Pause,
   Play,
+  RotateCcw,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,7 +34,16 @@ export function ViewControls() {
   const viewMode = useAtlasStore((state) => state.viewMode);
   const isPaused = useAtlasStore((state) => state.isPaused);
   const timeMultiplier = useAtlasStore((state) => state.timeMultiplier);
+  const showPlanets = useAtlasStore((state) => state.showPlanets);
+  const showMoons = useAtlasStore((state) => state.showMoons);
+  const showOrbitPaths = useAtlasStore((state) => state.showOrbitPaths);
   const setViewMode = useAtlasStore((state) => state.setViewMode);
+  const resetCamera = useAtlasStore((state) => state.resetCamera);
+  const setPlanetsVisible = useAtlasStore((state) => state.setPlanetsVisible);
+  const setMoonsVisible = useAtlasStore((state) => state.setMoonsVisible);
+  const setOrbitPathsVisible = useAtlasStore(
+    (state) => state.setOrbitPathsVisible,
+  );
   const togglePaused = useAtlasStore((state) => state.togglePaused);
   const setTimeMultiplier = useAtlasStore((state) => state.setTimeMultiplier);
   const locale = useAtlasStore((state) => state.locale);
@@ -59,19 +72,28 @@ export function ViewControls() {
           );
         })}
       </div>
-      <button
-        type="button"
-        aria-label={pauseAction}
-        aria-pressed={isPaused}
-        onClick={togglePaused}
-      >
-        {isPaused ? (
-          <Play aria-hidden="true" />
-        ) : (
-          <Pause aria-hidden="true" />
-        )}
-        {pauseAction}
-      </button>
+      <div className="view-controls__actions">
+        <button
+          type="button"
+          aria-label={copy.resetCamera}
+          onClick={resetCamera}
+        >
+          <RotateCcw aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          aria-label={pauseAction}
+          aria-pressed={isPaused}
+          onClick={togglePaused}
+        >
+          {isPaused ? (
+            <Play aria-hidden="true" />
+          ) : (
+            <Pause aria-hidden="true" />
+          )}
+          {pauseAction}
+        </button>
+      </div>
       <label htmlFor="simulation-speed">{copy.simulationSpeed}</label>
       <select
         id="simulation-speed"
@@ -86,6 +108,32 @@ export function ViewControls() {
           </option>
         ))}
       </select>
+      <section aria-label={copy.sceneFilters} className="view-controls__filters">
+        <button
+          type="button"
+          aria-pressed={showPlanets}
+          onClick={() => setPlanetsVisible(!showPlanets)}
+        >
+          <Globe2 aria-hidden="true" />
+          <span>{copy.bodyKinds.planet}</span>
+        </button>
+        <button
+          type="button"
+          aria-pressed={showMoons}
+          onClick={() => setMoonsVisible(!showMoons)}
+        >
+          <Moon aria-hidden="true" />
+          <span>{copy.bodyKinds.moon}</span>
+        </button>
+        <button
+          type="button"
+          aria-pressed={showOrbitPaths}
+          onClick={() => setOrbitPathsVisible(!showOrbitPaths)}
+        >
+          <Orbit aria-hidden="true" />
+          <span>{copy.orbitPaths}</span>
+        </button>
+      </section>
     </section>
   );
 }

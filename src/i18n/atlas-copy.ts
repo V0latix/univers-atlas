@@ -27,6 +27,9 @@ type AtlasCopy = {
   pauseSimulation: string;
   resumeSimulation: string;
   simulationSpeed: string;
+  resetCamera: string;
+  sceneFilters: string;
+  orbitPaths: string;
   daysPerSecond: (count: number) => string;
   profile: (name: string) => string;
   openProfile: (name: string) => string;
@@ -86,6 +89,9 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     pauseSimulation: "Mettre la simulation en pause",
     resumeSimulation: "Reprendre la simulation",
     simulationSpeed: "Vitesse de la simulation",
+    resetCamera: "Réinitialiser la caméra",
+    sceneFilters: "Filtres de la scène",
+    orbitPaths: "Orbites",
     daysPerSecond: (count) => `${count} jours par seconde`,
     profile: (name) => `Profil de ${name}`,
     openProfile: (name) => `Ouvrir le profil de ${name}`,
@@ -143,6 +149,9 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     pauseSimulation: "Pause simulation",
     resumeSimulation: "Resume simulation",
     simulationSpeed: "Simulation speed",
+    resetCamera: "Reset camera",
+    sceneFilters: "Scene filters",
+    orbitPaths: "Orbits",
     daysPerSecond: (count) => `${count} days per second`,
     profile: (name) => `${name} profile`,
     openProfile: (name) => `Open ${name} profile`,

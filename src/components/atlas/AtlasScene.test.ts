@@ -10,6 +10,7 @@ import { afterEach, beforeEach, vi } from "vitest";
 import {
   AtlasScene,
   getFocusTarget,
+  isSceneBodyVisible,
   getNextSimulationDays,
   getSceneBodyPosition,
   sceneLighting,
@@ -81,6 +82,16 @@ it("labels the primary scene bodies and the selected moon without crowding every
   expect(shouldShowSceneLabel(earth, "earth")).toBe(true);
   expect(shouldShowSceneLabel(titan, "earth")).toBe(false);
   expect(shouldShowSceneLabel(titan, "titan")).toBe(true);
+});
+
+it("keeps the Sun visible while filtering planets and moons independently", () => {
+  const sun = solarSystem.find((body) => body.id === "sun")!;
+  const earth = solarSystem.find((body) => body.id === "earth")!;
+  const titan = solarSystem.find((body) => body.id === "titan")!;
+
+  expect(isSceneBodyVisible(sun, false, false)).toBe(true);
+  expect(isSceneBodyVisible(earth, false, true)).toBe(false);
+  expect(isSceneBodyVisible(titan, true, false)).toBe(false);
 });
 
 it("positions Charon relative to the scene-only Pluto anchor", () => {

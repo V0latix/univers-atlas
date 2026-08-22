@@ -112,6 +112,17 @@ export function shouldShowSceneLabel(
   return body.kind !== "moon" || body.id === selectedId;
 }
 
+export function isSceneBodyVisible(
+  body: CelestialBody,
+  showPlanets: boolean,
+  showMoons: boolean,
+) {
+  if (body.kind === "planet") return showPlanets;
+  if (body.kind === "moon") return showMoons;
+
+  return true;
+}
+
 function CameraPreset({
   controlsRef,
   viewMode,
@@ -306,6 +317,9 @@ export function AtlasScene({
   const viewRevision = useAtlasStore((state) => state.viewRevision);
   const isPaused = useAtlasStore((state) => state.isPaused);
   const timeMultiplier = useAtlasStore((state) => state.timeMultiplier);
+  const showPlanets = useAtlasStore((state) => state.showPlanets);
+  const showMoons = useAtlasStore((state) => state.showMoons);
+  const showOrbitPaths = useAtlasStore((state) => state.showOrbitPaths);
   const prefersReducedMotion = usePrefersReducedMotion();
   const simulationDaysRef = useRef(0);
   const selectedBody = bodiesById.get(selectedId);
@@ -349,7 +363,8 @@ export function AtlasScene({
         prefersReducedMotion={prefersReducedMotion}
       />
 
-      {solarSystem
+      {showOrbitPaths
+        ? solarSystem
         .filter((body) => body.orbitRadius)
         .map((body) => (
           <OrbitPath
@@ -358,19 +373,26 @@ export function AtlasScene({
             getParentPosition={getSceneParentPosition}
             simulationDaysRef={simulationDaysRef}
           />
-        ))}
+        ))
+        : null}
 
-      {solarSystem.map((body) => (
+      {solarSystem
+        .filter((body) => isSceneBodyVisible(body, showPlanets, showMoons))
+        .map((body) => (
         <CelestialBodyMesh
           key={body.id}
           body={body}
           getBodyPosition={getSceneBodyPosition}
           simulationDaysRef={simulationDaysRef}
         />
-      ))}
+        ))}
 
       {solarSystem
-        .filter((body) => shouldShowSceneLabel(body, selectedId))
+        .filter(
+          (body) =>
+            isSceneBodyVisible(body, showPlanets, showMoons) &&
+            shouldShowSceneLabel(body, selectedId),
+        )
         .map((body) => (
           <SceneBodyLabel
             key={`${body.id}-label`}
@@ -381,7 +403,7 @@ export function AtlasScene({
           />
         ))}
 
-      {selectedBody ? (
+      {selectedBody && isSceneBodyVisible(selectedBody, showPlanets, showMoons) ? (
         <SelectedBodyHighlight
           body={selectedBody}
           getBodyPosition={getSceneBodyPosition}

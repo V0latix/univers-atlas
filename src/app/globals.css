@@ -578,6 +578,12 @@ input[type="search"] {
   gap: .32rem;
 }
 
+.view-controls__actions {
+  display: grid;
+  grid-template-columns: repeat(2, 2.75rem);
+  gap: .32rem;
+}
+
 .view-controls button,
 .focus-card button,
 .profile-panel button {
@@ -615,7 +621,7 @@ input[type="search"] {
   line-height: 1;
 }
 
-.view-controls > button {
+.view-controls__actions button {
   font-size: 0;
 }
 
@@ -638,6 +644,37 @@ input[type="search"] {
   border-radius: .72rem;
   color: var(--text);
   background: rgb(2 7 15 / 84%);
+}
+
+.view-controls__filters {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .32rem;
+  margin-top: .08rem;
+}
+
+.view-controls__filters button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  min-width: 0;
+  min-height: 2.2rem;
+  padding: 0 .35rem;
+  font-size: .59rem;
+  line-height: 1;
+}
+
+.view-controls__filters button[aria-pressed="false"] {
+  color: var(--dim);
+  background: rgb(2 7 15 / 54%);
+  opacity: .72;
+}
+
+.view-controls__filters button svg {
+  width: .82rem;
+  height: .82rem;
 }
 
 .focus-card {
@@ -1201,7 +1238,7 @@ input[type="search"] {
   }
 
   .view-controls {
-    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
     width: 100%;
     padding: .5rem;
   }
@@ -1210,7 +1247,7 @@ input[type="search"] {
     grid-column: 1;
   }
 
-  .view-controls > button {
+  .view-controls__actions {
     grid-column: 2;
   }
 
@@ -1227,10 +1264,14 @@ input[type="search"] {
   }
 
   .view-controls select {
-    grid-column: 3;
+    grid-column: 1 / -1;
     min-height: 2.75rem;
     padding-right: 1.45rem;
     font-size: .7rem;
+  }
+
+  .view-controls__filters {
+    grid-column: 1 / -1;
   }
 
   .focus-card {
