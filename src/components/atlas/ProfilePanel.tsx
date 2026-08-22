@@ -126,98 +126,107 @@ export function ProfilePanel() {
         </button>
       </header>
 
-      <p>{selectedBody.summary}</p>
-
-      <dl>
-        <div>
-          <dt>{copy.classification}</dt>
-          <dd>{copy.bodyKinds[selectedBody.kind]}</dd>
-        </div>
-        <div>
-          <dt>{copy.parentBody}</dt>
-          <dd>{parentName}</dd>
-        </div>
-        <div>
-          <dt>{copy.atmosphere}</dt>
-          <dd>{selectedBody.atmosphere ?? copy.unavailable}</dd>
-        </div>
-        <div>
-          <dt>{copy.composition}</dt>
-          <dd>{selectedBody.composition}</dd>
-        </div>
-        <div>
-          <dt>{selectedBody.temperatureLabel}</dt>
-          <dd>{withUnit(selectedBody.temperatureC, "°C", locale, copy.unavailable)}</dd>
-        </div>
-        <div>
-          <dt>{copy.rotation}</dt>
-          <dd>{selectedBody.rotation}</dd>
-        </div>
-        <div>
-          <dt>{copy.radius}</dt>
-          <dd>
-            {selectedBody.diameterKm === undefined
-              ? copy.unavailable
-              : withUnit(selectedBody.diameterKm / 2, "km", locale, copy.unavailable)}
-          </dd>
-        </div>
-        <div>
-          <dt>{copy.orbitalPeriod}</dt>
-          <dd>
-            {selectedBody.orbitalPeriodDays === undefined
-              ? copy.unavailable
-              : `${withUnit(selectedBody.orbitalPeriodDays, locale === "fr" ? "jours" : "days", locale, copy.unavailable)} (${copy.earthYears(daysToEarthYears(selectedBody.orbitalPeriodDays, locale, copy.unavailable))})`}
-          </dd>
-        </div>
-        <div>
-          <dt>{copy.diameter}</dt>
-          <dd>{withUnit(selectedBody.diameterKm, "km", locale, copy.unavailable)}</dd>
-        </div>
-        <div>
-          <dt>{copy.surfaceGravity}</dt>
-          <dd>{withUnit(selectedBody.gravityMs2, "m/s²", locale, copy.unavailable)}</dd>
-        </div>
-        <div>
-          <dt>{copy.orbitalVelocity}</dt>
-          <dd>{withUnit(selectedBody.orbitalSpeedKmS, "km/s", locale, copy.unavailable)}</dd>
-        </div>
-        <div>
-          <dt>{copy.distanceFromSun}</dt>
-          <dd>
-            {selectedBody.distanceFromSunKm === undefined
-              ? copy.unavailable
-              : `${withUnit(selectedBody.distanceFromSunKm, "km", locale, copy.unavailable)} (${kilometresToAu(selectedBody.distanceFromSunKm, locale, copy.unavailable)} AU)`}
-          </dd>
-        </div>
-        <div>
-          <dt>{copy.systemRole}</dt>
-          <dd>{systemRole(selectedBody, parentName, locale)}</dd>
-        </div>
-        <div>
-          <dt>{copy.catalogueCoverage}</dt>
-          <dd>{copy.notableAndMissions(selectedBody.notableFacts.length, selectedBody.missions.length)}</dd>
-        </div>
-      </dl>
-
-      <section aria-labelledby={`${selectedBody.id}-facts-title`}>
-        <h3 id={`${selectedBody.id}-facts-title`}>{copy.notableFacts}</h3>
-        <ul>
-          {selectedBody.notableFacts.map((fact) => (
-            <li key={fact}>{fact}</li>
-          ))}
-        </ul>
+      <section aria-labelledby={`${selectedBody.id}-essential-title`} className="profile-essential">
+        <h3 id={`${selectedBody.id}-essential-title`}>{copy.essential}</h3>
+        <p>{selectedBody.summary}</p>
+        <dl className="profile-essential__facts">
+          <div>
+            <dt>{copy.classification}</dt>
+            <dd>{copy.bodyKinds[selectedBody.kind]}</dd>
+          </div>
+          <div>
+            <dt>{selectedBody.temperatureLabel}</dt>
+            <dd>{withUnit(selectedBody.temperatureC, "°C", locale, copy.unavailable)}</dd>
+          </div>
+          <div>
+            <dt>{copy.diameter}</dt>
+            <dd>{withUnit(selectedBody.diameterKm, "km", locale, copy.unavailable)}</dd>
+          </div>
+          <div>
+            <dt>{copy.orbitalPeriod}</dt>
+            <dd>
+              {selectedBody.orbitalPeriodDays === undefined
+                ? copy.unavailable
+                : `${withUnit(selectedBody.orbitalPeriodDays, locale === "fr" ? "jours" : "days", locale, copy.unavailable)} (${copy.earthYears(daysToEarthYears(selectedBody.orbitalPeriodDays, locale, copy.unavailable))})`}
+            </dd>
+          </div>
+        </dl>
       </section>
 
-      <section aria-labelledby={`${selectedBody.id}-missions-title`}>
-        <h3 id={`${selectedBody.id}-missions-title`}>{copy.missions}</h3>
-        <ul>
-          {selectedBody.missions.map((mission) => (
-            <li key={mission}>{mission}</li>
-          ))}
-        </ul>
-      </section>
+      <details className="profile-details" open>
+        <summary>{copy.physicalData}</summary>
+        <dl>
+          <div>
+            <dt>{copy.parentBody}</dt>
+            <dd>{parentName}</dd>
+          </div>
+          <div>
+            <dt>{copy.atmosphere}</dt>
+            <dd>{selectedBody.atmosphere ?? copy.unavailable}</dd>
+          </div>
+          <div>
+            <dt>{copy.composition}</dt>
+            <dd>{selectedBody.composition}</dd>
+          </div>
+          <div>
+            <dt>{copy.rotation}</dt>
+            <dd>{selectedBody.rotation}</dd>
+          </div>
+          <div>
+            <dt>{copy.radius}</dt>
+            <dd>
+              {selectedBody.diameterKm === undefined
+                ? copy.unavailable
+                : withUnit(selectedBody.diameterKm / 2, "km", locale, copy.unavailable)}
+            </dd>
+          </div>
+          <div>
+            <dt>{copy.surfaceGravity}</dt>
+            <dd>{withUnit(selectedBody.gravityMs2, "m/s²", locale, copy.unavailable)}</dd>
+          </div>
+          <div>
+            <dt>{copy.orbitalVelocity}</dt>
+            <dd>{withUnit(selectedBody.orbitalSpeedKmS, "km/s", locale, copy.unavailable)}</dd>
+          </div>
+          <div>
+            <dt>{copy.distanceFromSun}</dt>
+            <dd>
+              {selectedBody.distanceFromSunKm === undefined
+                ? copy.unavailable
+                : `${withUnit(selectedBody.distanceFromSunKm, "km", locale, copy.unavailable)} (${kilometresToAu(selectedBody.distanceFromSunKm, locale, copy.unavailable)} AU)`}
+            </dd>
+          </div>
+          <div>
+            <dt>{copy.systemRole}</dt>
+            <dd>{systemRole(selectedBody, parentName, locale)}</dd>
+          </div>
+        </dl>
+      </details>
 
-      <p>
+      <details className="profile-details">
+        <summary>{copy.missionsAndFacts}</summary>
+        <section aria-labelledby={`${selectedBody.id}-facts-title`}>
+          <h3 id={`${selectedBody.id}-facts-title`}>{copy.notableFacts}</h3>
+          <ul>
+            {selectedBody.notableFacts.map((fact) => (
+              <li key={fact}>{fact}</li>
+            ))}
+          </ul>
+        </section>
+        <section aria-labelledby={`${selectedBody.id}-missions-title`}>
+          <h3 id={`${selectedBody.id}-missions-title`}>{copy.missions}</h3>
+          <ul>
+            {selectedBody.missions.map((mission) => (
+              <li key={mission}>{mission}</li>
+            ))}
+          </ul>
+        </section>
+        <p className="profile-details__coverage">
+          {copy.catalogueCoverage}: {copy.notableAndMissions(selectedBody.notableFacts.length, selectedBody.missions.length)}
+        </p>
+      </details>
+
+      <p className="profile-panel__source">
         {copy.source}:{" "}
         <a href={selectedBody.sourceUrl}>{selectedBody.sourceName}</a>
       </p>

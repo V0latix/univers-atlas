@@ -32,6 +32,9 @@ type AtlasCopy = {
   orbitPaths: string;
   daysPerSecond: (count: number) => string;
   profile: (name: string) => string;
+  essential: string;
+  physicalData: string;
+  missionsAndFacts: string;
   openProfile: (name: string) => string;
   closeProfile: string;
   classification: string;
@@ -94,6 +97,9 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     orbitPaths: "Orbites",
     daysPerSecond: (count) => `${count} jours par seconde`,
     profile: (name) => `Profil de ${name}`,
+    essential: "L’essentiel",
+    physicalData: "Données physiques et orbitales",
+    missionsAndFacts: "Faits remarquables et missions",
     openProfile: (name) => `Ouvrir le profil de ${name}`,
     closeProfile: "Fermer le profil",
     classification: "Classification",
@@ -154,6 +160,9 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     orbitPaths: "Orbits",
     daysPerSecond: (count) => `${count} days per second`,
     profile: (name) => `${name} profile`,
+    essential: "Essential",
+    physicalData: "Physical and orbital data",
+    missionsAndFacts: "Notable facts and missions",
     openProfile: (name) => `Open ${name} profile`,
     closeProfile: "Close profile",
     classification: "Classification",

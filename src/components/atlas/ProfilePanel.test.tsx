@@ -121,7 +121,7 @@ describe("FocusCard and ProfilePanel", () => {
       "1,426,666,422 km (9.54 AU)",
     );
     expectProfileField("System role", "Moon of Saturn");
-    expectProfileField("Catalogue coverage", "2 notable facts · 3 missions");
+    expect(screen.getByText("Catalogue coverage: 2 notable facts · 3 missions")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "NASA Science — Titan" }),
     ).toHaveAttribute("href", "https://science.nasa.gov/saturn/moons/titan/");
@@ -129,6 +129,25 @@ describe("FocusCard and ProfilePanel", () => {
       screen.getByText("It is the only moon with a substantial atmosphere."),
     ).toBeInTheDocument();
     expect(screen.getByText("Dragonfly")).toBeInTheDocument();
+  });
+
+  it("leads with essential facts and keeps further reading in expandable sections", async () => {
+    const user = userEvent.setup();
+    useAtlasStore.getState().selectAndOpenProfile("titan");
+    render(<ProfilePanel />);
+
+    expect(screen.getByRole("heading", { name: "Essential" })).toBeInTheDocument();
+    expect(screen.getByText("Dense nitrogen atmosphere with methane and complex organic haze")).toBeVisible();
+    expect(
+      screen.getByText("Physical and orbital data").closest("details"),
+    ).toHaveAttribute("open");
+    const missions = screen.getByText("Notable facts and missions").closest("details");
+    expect(missions).not.toHaveAttribute("open");
+
+    await user.click(screen.getByText("Notable facts and missions"));
+
+    expect(missions).toHaveAttribute("open");
+    expect(screen.getByText("Dragonfly")).toBeVisible();
   });
 
   it("closes the profile with an accessible button", async () => {
