@@ -1,0 +1,171 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e12]:
+        - text: Guide planétaire interactif
+        - heading "Univers Atlas" [level=1] [ref=e13]
+      - generic [ref=e14]:
+        - generic [ref=e17]:
+          - strong [ref=e18]: Simulation en direct
+          - text: 22 astres suivis
+        - group "Langue" [ref=e19]:
+          - button "FR" [pressed] [ref=e20] [cursor=pointer]
+          - button "EN" [ref=e21] [cursor=pointer]
+    - region "Contrôles de la vue" [ref=e24]:
+      - generic [ref=e25]:
+        - button "Vue 3D" [pressed] [ref=e26] [cursor=pointer]:
+          - generic [ref=e30]: 3D
+        - button "Vue de dessus" [ref=e31] [cursor=pointer]:
+          - generic [ref=e35]: Top
+        - button "Vue latérale" [ref=e36] [cursor=pointer]:
+          - generic [ref=e39]: Side
+      - button "Mettre la simulation en pause" [ref=e40] [cursor=pointer]
+      - generic [ref=e44]: Vitesse de la simulation
+      - combobox "Vitesse de la simulation" [ref=e45] [cursor=pointer]:
+        - option "1 jours par seconde"
+        - option "10 jours par seconde"
+        - option "30 jours par seconde" [selected]
+        - option "90 jours par seconde"
+        - option "365 jours par seconde"
+    - complementary "Explorer le Système solaire" [ref=e46]:
+      - generic [ref=e47]:
+        - paragraph [ref=e48]: Index céleste
+        - heading "Explorer les mondes" [level=2] [ref=e49]
+        - generic [ref=e50]: Rechercher un astre
+        - searchbox "Rechercher un astre" [ref=e55]
+        - paragraph [ref=e56]: "Astre sélectionné : Earth"
+        - list [ref=e57]:
+          - listitem [ref=e58]:
+            - button "Sun" [ref=e59] [cursor=pointer]:
+              - generic [ref=e62]:
+                - generic [ref=e63]: Étoile
+                - strong [ref=e64]: Sun
+                - generic [ref=e65]: Étoile du Système solaire
+          - listitem [ref=e69]:
+            - button "Mercury" [ref=e70] [cursor=pointer]:
+              - generic [ref=e73]:
+                - generic [ref=e74]: Planète
+                - strong [ref=e75]: Mercury
+                - generic [ref=e76]: Orbite de 88 jours
+          - listitem [ref=e80]:
+            - button "Venus" [ref=e81] [cursor=pointer]:
+              - generic [ref=e84]:
+                - generic [ref=e85]: Planète
+                - strong [ref=e86]: Venus
+                - generic [ref=e87]: Orbite de 224,7 jours
+          - listitem [ref=e91]:
+            - button "Earth" [pressed] [ref=e92] [cursor=pointer]:
+              - generic [ref=e95]:
+                - generic [ref=e96]: Planète
+                - strong [ref=e97]: Earth
+                - generic [ref=e98]: Orbite de 365,25 jours
+          - listitem [ref=e102]:
+            - button "Mars" [ref=e103] [cursor=pointer]:
+              - generic [ref=e106]:
+                - generic [ref=e107]: Planète
+                - strong [ref=e108]: Mars
+                - generic [ref=e109]: Orbite de 687 jours
+          - listitem [ref=e113]:
+            - button "Jupiter" [ref=e114] [cursor=pointer]:
+              - generic [ref=e117]:
+                - generic [ref=e118]: Planète
+                - strong [ref=e119]: Jupiter
+                - generic [ref=e120]: Orbite de 4 332,6 jours
+          - listitem [ref=e124]:
+            - button "Saturn" [ref=e125] [cursor=pointer]:
+              - generic "Saturn rings" [ref=e128]
+              - generic [ref=e129]:
+                - generic [ref=e130]: Planète
+                - strong [ref=e131]: Saturn
+                - generic [ref=e132]: Orbite de 10 759,2 jours
+          - listitem [ref=e136]:
+            - button "Uranus" [ref=e137] [cursor=pointer]:
+              - generic [ref=e140]:
+                - generic [ref=e141]: Planète
+                - strong [ref=e142]: Uranus
+                - generic [ref=e143]: Orbite de 30 688,5 jours
+          - listitem [ref=e147]:
+            - button "Neptune" [ref=e148] [cursor=pointer]:
+              - generic [ref=e151]:
+                - generic [ref=e152]: Planète
+                - strong [ref=e153]: Neptune
+                - generic [ref=e154]: Orbite de 60 182 jours
+          - listitem [ref=e158]:
+            - button "Moon" [ref=e159] [cursor=pointer]:
+              - generic [ref=e162]:
+                - generic [ref=e163]: Lune
+                - strong [ref=e164]: Moon
+                - generic [ref=e165]: Orbite de 27,3 jours
+          - listitem [ref=e169]:
+            - button "Phobos" [ref=e170] [cursor=pointer]:
+              - generic [ref=e173]:
+                - generic [ref=e174]: Lune
+                - strong [ref=e175]: Phobos
+                - generic [ref=e176]: Orbite de 0,319 jours
+          - listitem [ref=e180]:
+            - button "Deimos" [ref=e181] [cursor=pointer]:
+              - generic [ref=e184]:
+                - generic [ref=e185]: Lune
+                - strong [ref=e186]: Deimos
+                - generic [ref=e187]: Orbite de 1,263 jours
+          - listitem [ref=e191]:
+            - button "Io" [ref=e192] [cursor=pointer]:
+              - generic [ref=e195]:
+                - generic [ref=e196]: Lune
+                - strong [ref=e197]: Io
+                - generic [ref=e198]: Orbite de 1,769 jours
+          - listitem [ref=e202]:
+            - button "Europa" [ref=e203] [cursor=pointer]:
+              - generic [ref=e206]:
+                - generic [ref=e207]: Lune
+                - strong [ref=e208]: Europa
+                - generic [ref=e209]: Orbite de 3,551 jours
+          - listitem [ref=e213]:
+            - button "Ganymede" [ref=e214] [cursor=pointer]:
+              - generic [ref=e217]:
+                - generic [ref=e218]: Lune
+                - strong [ref=e219]: Ganymede
+                - generic [ref=e220]: Orbite de 7,155 jours
+          - listitem [ref=e224]:
+            - button "Callisto" [ref=e225] [cursor=pointer]:
+              - generic [ref=e228]:
+                - generic [ref=e229]: Lune
+                - strong [ref=e230]: Callisto
+                - generic [ref=e231]: Orbite de 16,689 jours
+          - listitem [ref=e235]:
+            - button "Mimas" [ref=e236] [cursor=pointer]:
+              - generic [ref=e239]:
+                - generic [ref=e240]: Lune
+                - strong [ref=e241]: Mimas
+                - generic [ref=e242]: Orbite de 0,942 jours
+          - listitem [ref=e246]:
+            - button "Enceladus" [ref=e247] [cursor=pointer]:
+              - generic [ref=e250]:
+                - generic [ref=e251]: Lune
+                - strong [ref=e252]: Enceladus
+                - generic [ref=e253]: Orbite de 1,37 jours
+          - listitem [ref=e257]:
+            - button "Titan" [ref=e258] [cursor=pointer]:
+              - generic [ref=e261]:
+                - generic [ref=e262]: Lune
+                - strong [ref=e263]: Titan
+                - generic [ref=e264]: Orbite de 15,945 jours
+          - listitem [ref=e268]:
+            - button "Iapetus" [ref=e269] [cursor=pointer]:
+              - generic [ref=e272]:
+                - generic [ref=e273]: Lune
+                - strong [ref=e274]: Iapetus
+                - generic [ref=e275]: Orbite de 79,322 jours
+          - listitem [ref=e279]:
+            - button "Triton" [ref=e280] [cursor=pointer]:
+              - generic [ref=e283]:
+                - generic [ref=e284]: Lune
+                - strong [ref=e285]: Triton
+                - generic [ref=e286]: Orbite de 5,877 jours
+          - listitem [ref=e290]:
+            - button "Charon" [ref=e291] [cursor=pointer]:
+              - generic [ref=e294]:
+                - generic [ref=e295]: Lune
+                - strong [ref=e296]: Charon
+                - generic [ref=e297]: Orbite de 6,387 jours
+  - alert [ref=e301]
