@@ -24,8 +24,8 @@ type AtlasCopy = {
   closeExplorer: string;
   viewControls: string;
   viewNames: Record<ViewMode, string>;
-  pauseSimulation: string;
-  resumeSimulation: string;
+  pause: string;
+  resume: string;
   simulationSpeed: string;
   resetCamera: string;
   sceneFilters: string;
@@ -89,8 +89,8 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     closeExplorer: "Fermer l’explorateur",
     viewControls: "Contrôles de la vue",
     viewNames: { "3d": "Vue 3D", top: "Vue de dessus", side: "Vue latérale" },
-    pauseSimulation: "Mettre la simulation en pause",
-    resumeSimulation: "Reprendre la simulation",
+    pause: "Pause",
+    resume: "Reprendre",
     simulationSpeed: "Vitesse de la simulation",
     resetCamera: "Réinitialiser la caméra",
     sceneFilters: "Filtres de la scène",
@@ -152,8 +152,8 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     closeExplorer: "Close explorer",
     viewControls: "View controls",
     viewNames: { "3d": "3D view", top: "Top view", side: "Side view" },
-    pauseSimulation: "Pause simulation",
-    resumeSimulation: "Resume simulation",
+    pause: "Pause",
+    resume: "Resume",
     simulationSpeed: "Simulation speed",
     resetCamera: "Reset camera",
     sceneFilters: "Scene filters",

@@ -580,7 +580,7 @@ input[type="search"] {
 
 .view-controls__actions {
   display: grid;
-  grid-template-columns: repeat(2, 2.75rem);
+  grid-template-columns: 2.75rem minmax(0, 1fr);
   gap: .32rem;
 }
 
@@ -623,6 +623,16 @@ input[type="search"] {
 
 .view-controls__actions button {
   font-size: 0;
+}
+
+.view-controls__actions .view-controls__pause {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .32rem;
+  padding: 0 .48rem;
+  font-size: .65rem;
+  font-weight: 650;
 }
 
 .view-controls button svg {

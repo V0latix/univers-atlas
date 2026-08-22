@@ -48,19 +48,20 @@ describe("ViewControls", () => {
     ).toHaveTextContent("Side");
   });
 
-  it("toggles simulation pause and exposes the state with aria-pressed", async () => {
+  it("keeps the visible and accessible pause action in sync", async () => {
     const user = userEvent.setup();
     render(<ViewControls />);
 
-    const pauseButton = screen.getByRole("button", {
-      name: "Pause simulation",
-    });
+    const pauseButton = screen.getByRole("button", { name: "Pause" });
+    expect(pauseButton).toHaveTextContent("Pause");
     expect(pauseButton).toHaveAttribute("aria-pressed", "false");
 
     await user.click(pauseButton);
 
     expect(useAtlasStore.getState().isPaused).toBe(true);
-    expect(pauseButton).toHaveAttribute("aria-pressed", "true");
+    const resumeButton = screen.getByRole("button", { name: "Resume" });
+    expect(resumeButton).toHaveTextContent("Resume");
+    expect(resumeButton).toHaveAttribute("aria-pressed", "true");
   });
 
   it("resets the camera and toggles the independent scene filters", async () => {

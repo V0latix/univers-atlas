@@ -48,7 +48,7 @@ export function ViewControls() {
   const setTimeMultiplier = useAtlasStore((state) => state.setTimeMultiplier);
   const locale = useAtlasStore((state) => state.locale);
   const copy = getAtlasCopy(locale);
-  const pauseAction = isPaused ? copy.resumeSimulation : copy.pauseSimulation;
+  const pauseAction = isPaused ? copy.resume : copy.pause;
 
   return (
     <section aria-label={copy.viewControls} className="view-controls">
@@ -81,6 +81,7 @@ export function ViewControls() {
           <RotateCcw aria-hidden="true" />
         </button>
         <button
+          className="view-controls__pause"
           type="button"
           aria-label={pauseAction}
           aria-pressed={isPaused}
@@ -91,7 +92,7 @@ export function ViewControls() {
           ) : (
             <Pause aria-hidden="true" />
           )}
-          {pauseAction}
+          <span>{pauseAction}</span>
         </button>
       </div>
       <label htmlFor="simulation-speed">{copy.simulationSpeed}</label>
