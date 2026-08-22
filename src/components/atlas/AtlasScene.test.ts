@@ -14,6 +14,7 @@ import {
   getSceneBodyPosition,
   sceneLighting,
   sceneAnchors,
+  shouldShowSceneLabel,
 } from "./AtlasScene";
 import { easeOutCubic } from "./camera-focus";
 
@@ -32,6 +33,10 @@ vi.mock("@/hooks/usePrefersReducedMotion", () => ({
 }));
 vi.mock("./CelestialBodyMesh", () => ({ CelestialBodyMesh: () => null }));
 vi.mock("./OrbitPath", () => ({ OrbitPath: () => null }));
+vi.mock("./SceneBodyLabel", () => ({ SceneBodyLabel: () => null }));
+vi.mock("./SelectedBodyHighlight", () => ({
+  SelectedBodyHighlight: () => null,
+}));
 
 function createControls() {
   const controls = {
@@ -67,6 +72,15 @@ it("uses brighter balanced illumination for the scene", () => {
   expect(sceneLighting.ambient).toBeGreaterThan(0.24);
   expect(sceneLighting.fill).toBeGreaterThan(0.38);
   expect(sceneLighting.sun).toBeGreaterThan(4.5);
+});
+
+it("labels the primary scene bodies and the selected moon without crowding every orbit", () => {
+  const earth = solarSystem.find((body) => body.id === "earth")!;
+  const titan = solarSystem.find((body) => body.id === "titan")!;
+
+  expect(shouldShowSceneLabel(earth, "earth")).toBe(true);
+  expect(shouldShowSceneLabel(titan, "earth")).toBe(false);
+  expect(shouldShowSceneLabel(titan, "titan")).toBe(true);
 });
 
 it("positions Charon relative to the scene-only Pluto anchor", () => {

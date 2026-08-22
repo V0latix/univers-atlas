@@ -24,6 +24,8 @@ import {
   type VectorTuple,
 } from "./camera-focus";
 import { OrbitPath } from "./OrbitPath";
+import { SceneBodyLabel } from "./SceneBodyLabel";
+import { SelectedBodyHighlight } from "./SelectedBodyHighlight";
 
 const ORBIT_ECCENTRICITY = 1;
 const CAMERA_POSITIONS: Record<ViewMode, [number, number, number]> = {
@@ -101,6 +103,13 @@ export function getFocusTarget(
   simulationDays: number,
 ): OrbitPoint {
   return getSceneBodyPosition(body, simulationDays);
+}
+
+export function shouldShowSceneLabel(
+  body: CelestialBody,
+  selectedId: string,
+) {
+  return body.kind !== "moon" || body.id === selectedId;
 }
 
 function CameraPreset({
@@ -299,6 +308,7 @@ export function AtlasScene({
   const timeMultiplier = useAtlasStore((state) => state.timeMultiplier);
   const prefersReducedMotion = usePrefersReducedMotion();
   const simulationDaysRef = useRef(0);
+  const selectedBody = bodiesById.get(selectedId);
 
   return (
     <>
@@ -358,6 +368,27 @@ export function AtlasScene({
           simulationDaysRef={simulationDaysRef}
         />
       ))}
+
+      {solarSystem
+        .filter((body) => shouldShowSceneLabel(body, selectedId))
+        .map((body) => (
+          <SceneBodyLabel
+            key={`${body.id}-label`}
+            body={body}
+            getBodyPosition={getSceneBodyPosition}
+            isSelected={body.id === selectedId}
+            simulationDaysRef={simulationDaysRef}
+          />
+        ))}
+
+      {selectedBody ? (
+        <SelectedBodyHighlight
+          body={selectedBody}
+          getBodyPosition={getSceneBodyPosition}
+          prefersReducedMotion={prefersReducedMotion}
+          simulationDaysRef={simulationDaysRef}
+        />
+      ) : null}
     </>
   );
 }

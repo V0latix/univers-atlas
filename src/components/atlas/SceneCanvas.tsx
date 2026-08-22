@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
+import { Orbit } from "lucide-react";
 import { MOUSE } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
@@ -78,6 +79,10 @@ export function SceneCanvas({ onWebglUnavailable }: SceneCanvasProps) {
           onStart={() => setFocusRevision((revision) => revision + 1)}
         />
       </Canvas>
+      <aside aria-label={copy.sceneHelpLabel} className="scene-help">
+        <Orbit aria-hidden="true" />
+        <span>{copy.sceneHelp}</span>
+      </aside>
     </section>
   );
 }

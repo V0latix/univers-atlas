@@ -56,6 +56,8 @@ type AtlasCopy = {
   illustration: (name: string) => string;
   rings: (name: string) => string;
   sceneAriaLabel: string;
+  sceneHelpLabel: string;
+  sceneHelp: string;
   webglUnavailable: string;
   webglFallback: string;
 };
@@ -113,6 +115,8 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     illustration: (name) => `Illustration de ${name}`,
     rings: (name) => `Anneaux de ${name}`,
     sceneAriaLabel: "Scène interactive du Système solaire",
+    sceneHelpLabel: "Aide des contrôles de la scène",
+    sceneHelp: "Caméra : clic droit pour orbiter · molette ou pincement pour zoomer · clic gauche pour déplacer la vue",
     webglUnavailable: "La vue 3D n’est pas disponible dans ce navigateur.",
     webglFallback: "Tu peux tout de même rechercher l’atlas et explorer la fiche de chaque astre.",
   },
@@ -168,6 +172,8 @@ export const atlasCopy: Record<AtlasLocale, AtlasCopy> = {
     illustration: (name) => `${name} illustration`,
     rings: (name) => `${name} rings`,
     sceneAriaLabel: "Interactive Solar System scene",
+    sceneHelpLabel: "Scene controls help",
+    sceneHelp: "Camera: right-drag to orbit · scroll or pinch to zoom · left-drag to pan",
     webglUnavailable: "3D view is unavailable in this browser.",
     webglFallback: "You can still search the atlas and explore every celestial body’s profile.",
   },

@@ -83,6 +83,11 @@ it("mounts the labelled scene after WebGL2 is available", () => {
   expect(canvasState.renderCount).toBe(1);
   expect(canvasState.gl).toEqual({ alpha: true });
   expect(canvasState.tabIndex).toBe(0);
+  expect(
+    screen.getByRole("complementary", { name: "Scene controls help" }),
+  ).toHaveTextContent(
+    "Camera: right-drag to orbit · scroll or pinch to zoom · left-drag to pan",
+  );
   expect(orbitControlsState.props).toMatchObject({
     enablePan: true,
     enableZoom: true,
